@@ -1,7 +1,8 @@
 import { React, Fragment } from 'react';
-import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react'
 import { Login } from '../components/Login';
+import Button from '@mui/material/Button';
+import { NavBar } from '../components/Navbar/Navbar';
 
 export const Home = () => {
     // const [username, setUsername] = useState('')
@@ -30,6 +31,7 @@ export const Home = () => {
     const loggedInHome = () => {
         return (
             <Fragment>
+                <Navbar />
                 <h1>Welcome to Firulais</h1>
                 <Button variant="contained">Hello world</Button>
             </Fragment>
