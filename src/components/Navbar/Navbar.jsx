@@ -29,10 +29,6 @@ export function TemporaryDrawer() {
         setState({ ...state, [anchor]: open });
     };
 
-    function pelotas() {
-        alert('bolas!')
-    }
-
     const list = (anchor) => (
 
         < Box
