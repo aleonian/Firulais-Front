@@ -34,7 +34,7 @@ function Copyright(props) {
 }
 
 
-export function Login() {
+export function LoginComponent() {
 
     const [loginErrorMessage, setLoginErrorMessage] = useState(null);
 

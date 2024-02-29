@@ -1,32 +1,28 @@
 import { React, Fragment } from 'react';
 import { useState, useEffect } from 'react'
-import { Login } from '../components/Login';
-import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
+
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
 
-export const Home = () => {
-    // const [username, setUsername] = useState('')
-    // const [password, setPassword] = useState('')
-    const [user, setUser] = useState(null);
-    // const [successMessage, setSuccessMessage] = useState(null);
-    // const [errorMessage, setErrorMessage] = useState(null);
+import Button from '@mui/material/Button';
 
-    // useEffect(() => {
-    //     if (user !== null) {
-    //         blogService.getAll().then(blogs =>
-    //             setBlogs(blogs)
-    //         );
-    //     }
-    // }, [user]);
+export const Home = () => {
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        
         let loggedUser = window.localStorage.getItem("loggedFirulaisUser");
         if (loggedUser) {
             loggedUser = JSON.parse(loggedUser);
             // blogService.setToken(loggedUser.token);
             setUser(loggedUser);
         }
-    }, [])
+        else {
+            
+            navigate('/login');
+        }
+    }, []);
 
     const loggedInHome = () => {
         return (
@@ -38,15 +34,8 @@ export const Home = () => {
         )
     }
 
-    const loginForm = () => {
-        return (
-            <Login />
-        )
-    }
-
     return (
         <Fragment>
-            {!user && loginForm()}
             {user && loggedInHome()}
         </Fragment>
     )

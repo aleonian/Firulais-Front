@@ -10,8 +10,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export function TemporaryDrawer() {
     const [state, setState] = React.useState({
@@ -29,9 +29,15 @@ export function TemporaryDrawer() {
         setState({ ...state, [anchor]: open });
     };
 
+    function pelotas() {
+        alert('bolas!')
+    }
+
     const list = (anchor) => (
-        <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+
+        < Box
+            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }
+            }
             role="presentation"
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}
@@ -57,13 +63,13 @@ export function TemporaryDrawer() {
                         </ListItemButton>
                     </ListItem>
                 </a>
-                <a href="/contact" className='drawerLink'>
+                <a href="/logout" className='drawerLink'>
                     <ListItem key={"Contact"} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                <MailIcon color="primary" fontSize="large" />
+                                <LogoutIcon color="primary" fontSize="large" />
                             </ListItemIcon>
-                            <ListItemText primary={"Contact"} />
+                            <ListItemText primary={"Logout"} />
                         </ListItemButton>
                     </ListItem>
                 </a>
