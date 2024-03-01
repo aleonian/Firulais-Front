@@ -7,45 +7,47 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
-
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 
-import { NewActionDialog } from './NewActionDialog';
+import { ActionDialog } from './ActionDialog';
+import { ErrorSnackBar } from './ErrorSnackBar';
 
-export const NewTestDialog = ({ open, handleClose }) => {
+export const TestDialog = ({ open, handleClose, tests, setTests }) => {
 
-    const [newActionDialogOpen, setNewActionDialogOpen] = useState(false);
+    const [ActionDialogOpen, setActionDialogOpen] = useState(false);
     const [actions, setActions] = useState([]);
+    const [actionIndex, setActionIndex] = useState(null);
+    const [name, setName] = useState([]);
+    const [url, setUrl] = useState([]);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const newActionBtnHandler = () => {
-        setNewActionDialogOpen(true);
+        setActionDialogOpen(true);
     }
 
-    function generate() {
+    function generateList() {
         if (actions.length > 0) {
-            debugger;
             return (
                 <List>
                     {
-                        actions.map(action => {
+                        actions.map((action, index) => {
                             return (
-                                <>
-                                    <ListItem key={action.name} secondaryAction={
-                                        <>
-                                            <IconButton onClick={handleActionEdit} edge="end" aria-label="edit">
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton onClick={handleActionDelete} edge="end" aria-label="delete">
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </>
-                                    }
-                                    >
-                                        <ListItemText primary={action.name} />
-                                    </ListItem>
-                                </>
+                                <ListItem key={action.name} secondaryAction={
+                                    <>
+                                        <IconButton onClick={()=>handleActionEdit(index)} edge="end" aria-label="edit">
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton onClick={()=>handleActionDelete(index)} edge="end" aria-label="delete">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </>
+                                }
+                                >
+                                    <ListItemText primary={action.name} />
+                                </ListItem>
                             )
                         })
                     }
@@ -57,12 +59,28 @@ export const NewTestDialog = ({ open, handleClose }) => {
         )
     }
 
-    const handleActionEdit = () => {
+    const handleActionEdit = (actionIndex) => {
+        setActionIndex(actionIndex);
+        setActionDialogOpen(true);
+    }
+
+    const handleActionDelete = (actionIndex) => {
         debugger;
     }
 
-    const handleActionDelete = () => {
-        debugger;
+    const handleSaveBtn = (event) => {
+
+        event.preventDefault();
+
+        if (tests.find(test => test.name === name)) {
+            setErrorMessage("The test name must be unique!");
+            setShowErrorAlert(true);
+            return;
+        }
+        const newTests = [...tests];
+        newTests.push({ name, url, actions });
+        setTests(newTests);
+        // handleClose();
     }
 
     return (
@@ -80,7 +98,7 @@ export const NewTestDialog = ({ open, handleClose }) => {
                                 variant='outlined'
                                 color='secondary'
                                 label="Name"
-                                // onChange={e => setEmail(e.target.value)}
+                                onChange={e => setName(e.target.value)}
                                 // value={email}
                                 fullWidth
                                 required
@@ -91,7 +109,7 @@ export const NewTestDialog = ({ open, handleClose }) => {
                                 variant='outlined'
                                 color='secondary'
                                 label="Url"
-                                // onChange={e => setPassword(e.target.value)}
+                                onChange={e => setUrl(e.target.value)}
                                 // value={password}
                                 required
                                 fullWidth
@@ -119,9 +137,7 @@ export const NewTestDialog = ({ open, handleClose }) => {
                             <InputLabel id="actions">Actions</InputLabel>
 
                             <List dense={true}>
-                                {generate(
-
-                                )}
+                                {generateList()}
                             </List>
 
                             <Button variant="contained" sx={{ mb: 4, display: 'block' }} onClick={newActionBtnHandler}>
@@ -129,19 +145,23 @@ export const NewTestDialog = ({ open, handleClose }) => {
                                 <PlusOneIcon />
                             </Button>
 
-                            <Button variant="outlined" color="secondary" type="submit">Register</Button>
+                            <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
                         </form>
                     </Box>
                 </Fragment>
-                <NewActionDialog
-                    open={newActionDialogOpen}
+                <ActionDialog
+                    open={ActionDialogOpen}
                     handleClose={() => {
-                        setNewActionDialogOpen(false);
+                        setActionDialogOpen(false);
                     }}
                     setActions={setActions}
                     actions={actions}
+                    actionIndex={actionIndex}
                 />
             </DialogContent>
+
+            {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+
         </Dialog>
     );
 };

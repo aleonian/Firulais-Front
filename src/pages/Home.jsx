@@ -9,12 +9,14 @@ import Button from '@mui/material/Button';
 
 
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
-import { NewTestDialog } from '../components/NewTestDialog';
+import { TestDialog } from '../components/TestDialog';
 
 
 export const Home = () => {
     const [user, setUser] = useState(null);
-    const [newTestDialogOpen, setNewTestDialogOpen] = useState(false);
+    const [TestDialogOpen, setTestDialogOpen] = useState(false);
+    const [tests, setTests] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,7 +24,6 @@ export const Home = () => {
         let loggedUser = window.localStorage.getItem("loggedFirulaisUser");
         if (loggedUser) {
             loggedUser = JSON.parse(loggedUser);
-            // blogService.setToken(loggedUser.token);
             setUser(loggedUser);
         }
         else {
@@ -32,7 +33,7 @@ export const Home = () => {
     }, []);
 
     const newTestBtnHandler = () => {
-        setNewTestDialogOpen(true);
+        setTestDialogOpen(true);
     }
 
     const loggedInHome = () => {
@@ -68,11 +69,21 @@ export const Home = () => {
                         Add new test
                         <PlusOneIcon />
                     </Button>
+
+                    Tests:
+
+                    {tests.map(test=>test.name)}
+
                 </Box>
 
-                <NewTestDialog open={newTestDialogOpen} handleClose={() => {
-                    setNewTestDialogOpen(false);
-                }} />
+                <TestDialog 
+                open={TestDialogOpen} 
+                handleClose={() => {
+                    setTestDialogOpen(false);
+                }}
+                tests={tests} 
+                setTests={setTests}
+                />
 
             </Fragment>
 

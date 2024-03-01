@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, Button, Select, FormControl, InputL
 import { Box } from '@mui/material';
 import { ErrorSnackBar } from './ErrorSnackBar';
 
-export const NewActionDialog = ({ open, handleClose, setActions, actions }) => {
+export const ActionDialog = ({ open, handleClose, setActions, actions, actionIndex }) => {
 
     const [name, setName] = useState("");
     const [elementId, setElementId] = useState("");
@@ -15,21 +15,33 @@ export const NewActionDialog = ({ open, handleClose, setActions, actions }) => {
 
         event.preventDefault();
 
-        if(actions.find(action=>action.name === name)){
-            setErrorMessage("The action name must be unique!");
-            setShowErrorAlert(true);
-            return;
-        }
+        debugger;
 
-        const newActions = [...actions];
-        newActions.push({name, elementId, command});
-        setActions(newActions);
+        //if !actionIndex means if this is a new action
+        //if the action is not new, if it's being edited, then actionIndex will not be falsy
+        if (actionIndex === null) {
+            if (actions.find(action => action.name === name)) {
+                setErrorMessage("The action name must be unique!");
+                setShowErrorAlert(true);
+                return;
+            }
+            else {
+                const newActions = [...actions];
+                newActions.push({ name, elementId, command });
+                setActions(newActions);
+            }
+        }
+        else {
+            const newActions = [...actions];
+            newActions[actionIndex] = { name, elementId, command };
+            setActions(newActions);
+        }
         handleClose();
     }
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
-            <DialogTitle>Create new action 🎬 for the 🦴 test for the 🐶</DialogTitle>
+            <DialogTitle>Create new action 🎬 for the test 🦴 for Firulais 🐶</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -46,6 +58,7 @@ export const NewActionDialog = ({ open, handleClose, setActions, actions }) => {
                                 // value={email}
                                 fullWidth
                                 required
+                                value={actionIndex ? actions[actionIndex].name : name}
                                 sx={{ mb: 4 }}
                             />
                             <TextField
@@ -57,6 +70,7 @@ export const NewActionDialog = ({ open, handleClose, setActions, actions }) => {
                                 // value={password}
                                 required
                                 fullWidth
+                                value={actionIndex ? actions[actionIndex].elementId : elementId}
                                 sx={{ mb: 4 }}
                             />
 
@@ -68,10 +82,12 @@ export const NewActionDialog = ({ open, handleClose, setActions, actions }) => {
                                     label="Select an Action"
                                     onChange={e => setCommand(e.target.value)}
                                     required
-                                    defaultValue=""
+                                    // defaultValue=""
+                                    value={actionIndex ? actions[actionIndex].command : command}
                                     sx={{ mb: 4 }}
                                 >
                                     <MenuItem key={1} value={"waitForSelector"}>waitForSelector</MenuItem>
+                                    <MenuItem key={2} value={"otraVaina"}>otraVaina</MenuItem>
                                 </Select>
                             </FormControl>
                             {/* <Button variant="contained" sx={{ mb: 4 }} onClick={newActionBtnHandler}>

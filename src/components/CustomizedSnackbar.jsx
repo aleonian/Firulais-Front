@@ -22,14 +22,18 @@ export function CustomizedSnackbar({ open, severity, message }) {
     return (
         <div>
             <Button onClick={handleClick}>Open Snackbar</Button>
-            <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar 
+            open={isOpen} 
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            autoHideDuration={6000} 
+            onClose={handleClose}>
                 <Alert
                     onClose={handleClose}
                     severity={severity}
                     variant="filled"
                     sx={{ width: '100%' }}
                 >
-                   {message}
+                    {message}
                 </Alert>
             </Snackbar>
         </div>
