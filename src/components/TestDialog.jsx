@@ -12,11 +12,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 
 import { ActionDialog } from './ActionDialog';
+import { DeleteActionConfirm } from './DeleteActionConfirm';
+
 import { ErrorSnackBar } from './ErrorSnackBar';
 
 export const TestDialog = ({ open, handleClose, tests, setTests }) => {
 
     const [ActionDialogOpen, setActionDialogOpen] = useState(false);
+    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
     const [name, setName] = useState([]);
@@ -37,10 +40,10 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
                             return (
                                 <ListItem key={action.name} secondaryAction={
                                     <>
-                                        <IconButton onClick={()=>handleActionEdit(index)} edge="end" aria-label="edit">
+                                        <IconButton onClick={() => handleActionEdit(index)} edge="end" aria-label="edit">
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton onClick={()=>handleActionDelete(index)} edge="end" aria-label="delete">
+                                        <IconButton onClick={() => handleActionDelete(index)} edge="end" aria-label="delete">
                                             <DeleteIcon />
                                         </IconButton>
                                     </>
@@ -65,9 +68,18 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
     }
 
     const handleActionDelete = (actionIndex) => {
-        debugger;
+        setActionIndex(actionIndex);
+        setDeleteActionConfirmOpen(true);
     }
 
+    const deleteAction = () => {
+        const newActions = [...actions];
+        newActions.splice(actionIndex, 1);
+        setActions(newActions);
+        setDeleteActionConfirmOpen(false);
+
+
+    }
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
@@ -161,6 +173,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
             </DialogContent>
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+            <DeleteActionConfirm
+                open={DeleteActionConfirmOpen}
+                handleClose={() => { setDeleteActionConfirmOpen(false) }}
+                handleYesCase={deleteAction}
+            />
 
         </Dialog>
     );

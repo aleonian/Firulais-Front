@@ -15,8 +15,6 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
 
         event.preventDefault();
 
-        debugger;
-
         //if !actionIndex means if this is a new action
         //if the action is not new, if it's being edited, then actionIndex will not be falsy
         if (actionIndex === null) {
