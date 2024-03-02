@@ -7,16 +7,19 @@ import Typography from '@mui/material/Typography';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import Button from '@mui/material/Button';
 
-
+import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
 import { TestDialog } from '../components/TestDialog';
 
+import testService from '../services/tests';
 
 export const Home = () => {
     const [user, setUser] = useState(null);
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
     const [tests, setTests] = useState([]);
     const [testIndex, setTestIndex] = useState(null);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -25,13 +28,26 @@ export const Home = () => {
         let loggedUser = window.localStorage.getItem("loggedFirulaisUser");
         if (loggedUser) {
             loggedUser = JSON.parse(loggedUser);
+            testService.setToken(loggedUser.token);
             setUser(loggedUser);
+            testService.getAll()
+                .then(testsArray => {
+                    setTests(testsArray)
+                })
+                .catch(error => {
+                    setErrorMessage("Something wrong happened fetching the tests: " + error);
+                    showErrorAlertAndThenVanishIt();
+                })
         }
         else {
-
             navigate('/login');
         }
     }, []);
+
+    const showErrorAlertAndThenVanishIt = () => {
+        setShowErrorAlert(true);
+        setTimeout(() => setShowErrorAlert(false), 5000);
+    }
 
     const newTestBtnHandler = () => {
         setTestDialogOpen(true);
@@ -91,10 +107,11 @@ export const Home = () => {
 
                 </Box>
 
+                {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+
                 <TestDialog
                     open={TestDialogOpen}
                     handleClose={() => {
-                        debugger;
                         setTestIndex(null);
                         setTestDialogOpen(false);
                     }}

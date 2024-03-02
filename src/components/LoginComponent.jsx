@@ -16,7 +16,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import loginService from '../services/login'
+import loginService from '../services/login';
+import testService from '../services/tests';
 
 import { MyAlert } from './MyAlert';
 
@@ -50,7 +51,7 @@ export function LoginComponent() {
             })
 
             window.localStorage.setItem('loggedFirulaisUser', JSON.stringify(user));
-            // blogService.setToken(user.token);
+            testService.setToken(user.token);
             // setUser(user)
             navigate('/');
         } catch (exception) {

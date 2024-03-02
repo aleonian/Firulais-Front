@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, Select, FormControl, InputLabel, MenuItem, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Button, InputLabel, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
 import List from '@mui/material/List';
@@ -13,8 +13,10 @@ import PlusOneIcon from '@mui/icons-material/PlusOne';
 
 import { ActionDialog } from './ActionDialog';
 import { DeleteActionConfirm } from './DeleteActionConfirm';
-
 import { ErrorSnackBar } from './ErrorSnackBar';
+import { SuccessSnackbar } from './SuccessSnackbar';
+
+import testService from '../services/tests'
 
 export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) => {
 
@@ -26,6 +28,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const [url, setUrl] = useState([]);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
 
     const newActionBtnHandler = () => {
         setActionDialogOpen(true);
@@ -93,23 +97,44 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
         if (testIndex === null) {
             if (tests.find(test => test.name === name)) {
-                setErrorMessage("The test name must be unique!");
-                setShowErrorAlert(true);
+                showErrorAlertAndThenVanishIt("The test name must be unique!");
                 return;
             }
-            const newTests = [...tests];
-            newTests.push({ name, url, actions });
-            setTests(newTests);
+            //save to site
+            const newlyCreatedTest = { name, url, actions };
+            testService.create(newlyCreatedTest)
+                .then(response => {
+                    const newTests = [...tests];
+                    newTests.push(newlyCreatedTest);
+                    setTests(newTests);
+                    cleanUp();
+                    showSuccessAlertAndThenVanishIt(`Test saved to DB! 👍`);
+                    setTimeout(()=>handleClose(), 1000);
+                })
+                .catch(exception => {
+                    showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
+                });
             // handleClose();
         }
         else {
             const newTests = [...tests];
             newTests[testIndex] = { name, url, actions };
             setTests(newTests);
+            cleanUp();
+            handleClose();
         }
+    }
 
-        cleanUp();
-        handleClose();
+    const showSuccessAlertAndThenVanishIt = (successMessage) => {
+        setSuccessMessage(successMessage);
+        setShowSuccessAlert(true);
+        setTimeout(() => setShowSuccessAlert(false), 5000);
+    }
+
+    const showErrorAlertAndThenVanishIt = (errorMessage) => {
+        setErrorMessage(errorMessage);
+        setShowErrorAlert(true);
+        setTimeout(() => setShowErrorAlert(false), 5000);
     }
 
     return (
@@ -192,6 +217,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             </DialogContent>
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+            {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
             <DeleteActionConfirm
                 open={DeleteActionConfirmOpen}
                 handleClose={() => { setDeleteActionConfirmOpen(false) }}

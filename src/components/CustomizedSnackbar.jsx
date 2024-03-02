@@ -21,7 +21,6 @@ export function CustomizedSnackbar({ open, severity, message }) {
 
     return (
         <div>
-            <Button onClick={handleClick}>Open Snackbar</Button>
             <Snackbar 
             open={isOpen} 
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
