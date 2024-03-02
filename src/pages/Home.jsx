@@ -4,22 +4,26 @@ import { useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import PlusOneIcon from '@mui/icons-material/PlusOne';
 import Button from '@mui/material/Button';
 
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
+import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
 import { TestDialog } from '../components/TestDialog';
+import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
 
 import testService from '../services/tests';
 
 export const Home = () => {
     const [user, setUser] = useState(null);
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
+    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
     const [tests, setTests] = useState([]);
     const [testIndex, setTestIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -44,9 +48,16 @@ export const Home = () => {
         }
     }, []);
 
-    const showErrorAlertAndThenVanishIt = () => {
+    const showErrorAlertAndThenVanishIt = (errorMessage) => {
+        setErrorMessage(errorMessage);
         setShowErrorAlert(true);
         setTimeout(() => setShowErrorAlert(false), 5000);
+    }
+
+    const showSuccessAlertAndThenVanishIt = (successMessage) => {
+        setSuccessMessage(successMessage);
+        setShowSuccessAlert(true);
+        setTimeout(() => setShowSuccessAlert(false), 5000);
     }
 
     const newTestBtnHandler = () => {
@@ -83,8 +94,7 @@ export const Home = () => {
                     }}>
 
                     <Button variant="contained" onClick={newTestBtnHandler}>
-                        Add new test
-                        <PlusOneIcon />
+                        Add new test 🧪
                     </Button>
 
                     {
@@ -96,6 +106,7 @@ export const Home = () => {
                                         <div key={index}>
                                             {test.name}
                                             <button onClick={() => { editTest(index) }}>Edit</button>
+                                            <button onClick={() => { confirmDeleteTest(index) }}>Delete</button>
                                         </div>
                                     ))}
                                 </div>
@@ -108,6 +119,7 @@ export const Home = () => {
                 </Box>
 
                 {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+                {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
 
                 <TestDialog
                     open={TestDialogOpen}
@@ -120,6 +132,12 @@ export const Home = () => {
                     testIndex={testIndex}
                 />
 
+                <DeleteActionConfirm
+                    open={DeleteActionConfirmOpen}
+                    handleClose={() => { setDeleteActionConfirmOpen(false) }}
+                    handleYesCase={deleteTest}
+                />
+
             </Fragment >
 
         )
@@ -129,6 +147,33 @@ export const Home = () => {
         setTestIndex(index);
         setTestDialogOpen(true);
     }
+
+    const confirmDeleteTest = (index) => {
+        setTestIndex(index);
+        setDeleteActionConfirmOpen(true);
+    }
+
+    const deleteTest = () => {
+
+        testService.erase(tests[testIndex])
+            .then(response => {
+                debugger;
+                const newTests = [...tests];
+                newTests.splice(testIndex, 1);
+                setTests(newTests);
+                setDeleteActionConfirmOpen(false);
+                setTestIndex(null);
+                showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
+                setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+
+            })
+            .catch(error => { 
+                debugger;
+                showErrorAlertAndThenVanishIt(error.response.data.error);
+                setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+            })
+    }
+
     return (
         <Fragment>
             {user && loggedInHome()}

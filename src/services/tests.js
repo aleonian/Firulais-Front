@@ -23,4 +23,12 @@ const create = (data) => {
   }
   return axios.post(baseUrl, data, config);
 }
-export default { getAll, setToken, create }
+
+const erase = (test) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.delete(`${baseUrl}/${test.id}`, config);
+
+}
+export default { getAll, setToken, create, erase }
