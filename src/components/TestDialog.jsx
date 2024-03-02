@@ -16,7 +16,7 @@ import { DeleteActionConfirm } from './DeleteActionConfirm';
 
 import { ErrorSnackBar } from './ErrorSnackBar';
 
-export const TestDialog = ({ open, handleClose, tests, setTests }) => {
+export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) => {
 
     const [ActionDialogOpen, setActionDialogOpen] = useState(false);
     const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
@@ -77,22 +77,39 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
         newActions.splice(actionIndex, 1);
         setActions(newActions);
         setDeleteActionConfirmOpen(false);
+        setActionIndex(null);
+    }
 
-
+    const cleanUp = () => {
+        setActionIndex(null);
+        document.getElementById('testName').value = "";
+        document.getElementById('testUrl').value = "";
+        setName(null);
+        setUrl(null);
     }
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
 
-        if (tests.find(test => test.name === name)) {
-            setErrorMessage("The test name must be unique!");
-            setShowErrorAlert(true);
-            return;
+        if (testIndex === null) {
+            if (tests.find(test => test.name === name)) {
+                setErrorMessage("The test name must be unique!");
+                setShowErrorAlert(true);
+                return;
+            }
+            const newTests = [...tests];
+            newTests.push({ name, url, actions });
+            setTests(newTests);
+            // handleClose();
         }
-        const newTests = [...tests];
-        newTests.push({ name, url, actions });
-        setTests(newTests);
-        // handleClose();
+        else {
+            const newTests = [...tests];
+            newTests[testIndex] = { name, url, actions };
+            setTests(newTests);
+        }
+
+        cleanUp();
+        handleClose();
     }
 
     return (
@@ -111,10 +128,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
                                 color='secondary'
                                 label="Name"
                                 onChange={e => setName(e.target.value)}
-                                // value={email}
+                                value={testIndex ? tests[testIndex].name : name}
                                 fullWidth
                                 required
                                 sx={{ mb: 4 }}
+                                id="testName"
                             />
                             <TextField
                                 type="text"
@@ -122,10 +140,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests }) => {
                                 color='secondary'
                                 label="Url"
                                 onChange={e => setUrl(e.target.value)}
-                                // value={password}
+                                value={testIndex ? tests[testIndex].url : url}
                                 required
                                 fullWidth
                                 sx={{ mb: 4 }}
+                                id="testUrl"
                             />
 
                             {/* <FormControl fullWidth>

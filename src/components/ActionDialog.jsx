@@ -77,10 +77,9 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                 <Select
                                     labelId="selectActionLabel"
                                     // value={personName}
-                                    label="Select an Action"
+                                    label="Select a Command"
                                     onChange={e => setCommand(e.target.value)}
                                     required
-                                    // defaultValue=""
                                     value={actionIndex ? actions[actionIndex].command : command}
                                     sx={{ mb: 4 }}
                                 >

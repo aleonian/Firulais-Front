@@ -16,6 +16,7 @@ export const Home = () => {
     const [user, setUser] = useState(null);
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
     const [tests, setTests] = useState([]);
+    const [testIndex, setTestIndex] = useState(null);
 
     const navigate = useNavigate();
 
@@ -70,26 +71,47 @@ export const Home = () => {
                         <PlusOneIcon />
                     </Button>
 
-                    Tests:
+                    {
+                        tests.length > 0 && (
+                            <>
+                                Tests:
+                                <div>
+                                    {tests.map((test, index) => (
+                                        <div key={index}>
+                                            {test.name}
+                                            <button onClick={() => { editTest(index) }}>Edit</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )
+                    }
 
-                    {tests.map(test=>test.name)}
+
 
                 </Box>
 
-                <TestDialog 
-                open={TestDialogOpen} 
-                handleClose={() => {
-                    setTestDialogOpen(false);
-                }}
-                tests={tests} 
-                setTests={setTests}
+                <TestDialog
+                    open={TestDialogOpen}
+                    handleClose={() => {
+                        debugger;
+                        setTestIndex(null);
+                        setTestDialogOpen(false);
+                    }}
+                    tests={tests}
+                    setTests={setTests}
+                    testIndex={testIndex}
                 />
 
-            </Fragment>
+            </Fragment >
 
         )
     }
 
+    const editTest = (index) => {
+        setTestIndex(index);
+        setTestDialogOpen(true);
+    }
     return (
         <Fragment>
             {user && loggedInHome()}
