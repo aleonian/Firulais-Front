@@ -61,6 +61,7 @@ export const Home = () => {
     }
 
     const newTestBtnHandler = () => {
+        setTestIndex(null);
         setTestDialogOpen(true);
     }
 
@@ -144,7 +145,7 @@ export const Home = () => {
     }
 
     const editTest = (index) => {
-        debugger;
+       
         setTestIndex(index);
         setTestDialogOpen(true);
     }

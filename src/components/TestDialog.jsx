@@ -96,13 +96,13 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
         setActionIndex(null);
         document.getElementById('testName').value = "";
         document.getElementById('testUrl').value = "";
-        setName(null);
-        setUrl(null);
+        setName("");
+        setUrl("");
     }
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
-        debugger;
+       
         if (testIndex === null) {
             if (tests.find(test => test.name === name)) {
                 showErrorAlertAndThenVanishIt("The test name must be unique!");
@@ -112,7 +112,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             const newlyCreatedTest = { name, url, actions };
             testService.create(newlyCreatedTest)
                 .then(response => {
-                    debugger;
+                   
                     newlyCreatedTest.id = response.data.id;
                     const newTests = [...tests];
                     newTests.push(newlyCreatedTest);
@@ -124,12 +124,14 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 .catch(exception => {
                     showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
                 });
-            // handleClose();
         }
         else {
             const updatedTest = { name, url, actions, id: tests[testIndex].id };
+            //TODO check that the updated test and the stored test are the same
+            //if they are, then do not update the test in the server
             testService.update(updatedTest)
                 .then(response => {
+                    
                     const newTests = [...tests];
                     newTests[testIndex] = updatedTest;
                     setTests(newTests);
@@ -156,7 +158,10 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     return (
-        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={()=>{
+            cleanUp();
+            handleClose();
+        }}>
             <DialogTitle>{testIndex ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
             <DialogContent>
                 <Fragment>
