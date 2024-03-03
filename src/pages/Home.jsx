@@ -51,13 +51,13 @@ export const Home = () => {
     const showErrorAlertAndThenVanishIt = (errorMessage) => {
         setErrorMessage(errorMessage);
         setShowErrorAlert(true);
-        setTimeout(() => setShowErrorAlert(false), 5000);
+        setTimeout(() => setShowErrorAlert(false), 1500);
     }
 
     const showSuccessAlertAndThenVanishIt = (successMessage) => {
         setSuccessMessage(successMessage);
         setShowSuccessAlert(true);
-        setTimeout(() => setShowSuccessAlert(false), 5000);
+        setTimeout(() => setShowSuccessAlert(false), 1500);
     }
 
     const newTestBtnHandler = () => {
@@ -144,6 +144,7 @@ export const Home = () => {
     }
 
     const editTest = (index) => {
+        debugger;
         setTestIndex(index);
         setTestDialogOpen(true);
     }
@@ -157,7 +158,6 @@ export const Home = () => {
 
         testService.erase(tests[testIndex])
             .then(response => {
-                debugger;
                 const newTests = [...tests];
                 newTests.splice(testIndex, 1);
                 setTests(newTests);
@@ -168,7 +168,6 @@ export const Home = () => {
 
             })
             .catch(error => { 
-                debugger;
                 showErrorAlertAndThenVanishIt(error.response.data.error);
                 setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
             })

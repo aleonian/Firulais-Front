@@ -24,11 +24,18 @@ const create = (data) => {
   return axios.post(baseUrl, data, config);
 }
 
-const erase = (test) => {
+const erase = (data) => {
   const config = {
     headers: { Authorization: token },
   }
-  return axios.delete(`${baseUrl}/${test.id}`, config);
+  return axios.delete(`${baseUrl}/${data.id}`, config);
 
 }
-export default { getAll, setToken, create, erase }
+
+const update = (data) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.put(`${baseUrl}/${data.id}`, data, config);
+}
+export default { getAll, setToken, create, erase, update }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, Button, InputLabel, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
@@ -30,6 +30,14 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+
+    useEffect(() => {
+        if (testIndex !== null) {
+            setName(tests[testIndex].name);
+            setUrl(tests[testIndex].url);
+        }
+    }, [testIndex]);
+
 
     const newActionBtnHandler = () => {
         setActionDialogOpen(true);
@@ -94,7 +102,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
-
+        debugger;
         if (testIndex === null) {
             if (tests.find(test => test.name === name)) {
                 showErrorAlertAndThenVanishIt("The test name must be unique!");
@@ -104,12 +112,14 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             const newlyCreatedTest = { name, url, actions };
             testService.create(newlyCreatedTest)
                 .then(response => {
+                    debugger;
+                    newlyCreatedTest.id = response.data.id;
                     const newTests = [...tests];
                     newTests.push(newlyCreatedTest);
                     setTests(newTests);
                     cleanUp();
                     showSuccessAlertAndThenVanishIt(`Test saved to DB! 👍`);
-                    setTimeout(()=>handleClose(), 1000);
+                    setTimeout(() => handleClose(), 1000);
                 })
                 .catch(exception => {
                     showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
@@ -117,29 +127,37 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             // handleClose();
         }
         else {
-            const newTests = [...tests];
-            newTests[testIndex] = { name, url, actions };
-            setTests(newTests);
-            cleanUp();
-            handleClose();
+            const updatedTest = { name, url, actions, id: tests[testIndex].id };
+            testService.update(updatedTest)
+                .then(response => {
+                    const newTests = [...tests];
+                    newTests[testIndex] = updatedTest;
+                    setTests(newTests);
+                    showSuccessAlertAndThenVanishIt(`Test updated to DB! 👍`);
+                    cleanUp();
+                    setTimeout(() => handleClose(), 1000);
+                })
+                .catch(exception => {
+                    showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
+                });
         }
     }
 
     const showSuccessAlertAndThenVanishIt = (successMessage) => {
         setSuccessMessage(successMessage);
         setShowSuccessAlert(true);
-        setTimeout(() => setShowSuccessAlert(false), 5000);
+        setTimeout(() => setShowSuccessAlert(false), 1500);
     }
 
     const showErrorAlertAndThenVanishIt = (errorMessage) => {
         setErrorMessage(errorMessage);
         setShowErrorAlert(true);
-        setTimeout(() => setShowErrorAlert(false), 5000);
+        setTimeout(() => setShowErrorAlert(false), 1500);
     }
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
-            <DialogTitle>Create New Test 🦴 for the doggy</DialogTitle>
+            <DialogTitle>{testIndex ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -153,7 +171,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 color='secondary'
                                 label="Name"
                                 onChange={e => setName(e.target.value)}
-                                value={testIndex ? tests[testIndex].name : name}
+                                value={name}
                                 fullWidth
                                 required
                                 sx={{ mb: 4 }}
@@ -165,7 +183,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 color='secondary'
                                 label="Url"
                                 onChange={e => setUrl(e.target.value)}
-                                value={testIndex ? tests[testIndex].url : url}
+                                value={url}
                                 required
                                 fullWidth
                                 sx={{ mb: 4 }}
