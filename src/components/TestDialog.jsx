@@ -35,6 +35,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
         if (testIndex !== null) {
             setName(tests[testIndex].name);
             setUrl(tests[testIndex].url);
+            setActions(tests[testIndex].actions);
         }
     }, [testIndex]);
 
@@ -98,11 +99,16 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
         document.getElementById('testUrl').value = "";
         setName("");
         setUrl("");
+        setActions([]);
     }
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
        
+        if(actions.length < 1){
+            showErrorAlertAndThenVanishIt("You must add at least one action!");
+            return;
+        }
         if (testIndex === null) {
             if (tests.find(test => test.name === name)) {
                 showErrorAlertAndThenVanishIt("The test name must be unique!");
@@ -112,7 +118,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             const newlyCreatedTest = { name, url, actions };
             testService.create(newlyCreatedTest)
                 .then(response => {
-                   
                     newlyCreatedTest.id = response.data.id;
                     const newTests = [...tests];
                     newTests.push(newlyCreatedTest);
@@ -131,7 +136,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             //if they are, then do not update the test in the server
             testService.update(updatedTest)
                 .then(response => {
-                    
                     const newTests = [...tests];
                     newTests[testIndex] = updatedTest;
                     setTests(newTests);
@@ -159,10 +163,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={()=>{
+            debugger;
             cleanUp();
             handleClose();
         }}>
-            <DialogTitle>{testIndex ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
+            <DialogTitle>{testIndex != null ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>

@@ -1,4 +1,4 @@
-import { React, Fragment, useState } from 'react';
+import { React, Fragment, useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, Button, Select, FormControl, InputLabel, MenuItem, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import { ErrorSnackBar } from './ErrorSnackBar';
@@ -11,6 +11,14 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    useEffect(() => {
+        if (actionIndex !== null) {
+            setName(actions[actionIndex].name);
+            setElementId(actions[actionIndex].elementId);
+            setCommand(actions[actionIndex].command);
+        }
+    }, [actionIndex]);
+    
     const handleSubmit = (event) => {
 
         event.preventDefault();
@@ -53,10 +61,9 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                 color='secondary'
                                 label="Name"
                                 onChange={e => setName(e.target.value)}
-                                // value={email}
                                 fullWidth
                                 required
-                                value={actionIndex ? actions[actionIndex].name : name}
+                                value={name}
                                 sx={{ mb: 4 }}
                             />
                             <TextField
@@ -65,10 +72,9 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                 color='secondary'
                                 label="Element Id"
                                 onChange={e => setElementId(e.target.value)}
-                                // value={password}
                                 required
                                 fullWidth
-                                value={actionIndex ? actions[actionIndex].elementId : elementId}
+                                value={elementId}
                                 sx={{ mb: 4 }}
                             />
 
@@ -80,7 +86,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                     label="Select a Command"
                                     onChange={e => setCommand(e.target.value)}
                                     required
-                                    value={actionIndex ? actions[actionIndex].command : command}
+                                    value={command}
                                     sx={{ mb: 4 }}
                                 >
                                     <MenuItem key={1} value={"waitForSelector"}>waitForSelector</MenuItem>
