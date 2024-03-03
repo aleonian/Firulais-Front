@@ -24,8 +24,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
-    const [name, setName] = useState([]);
-    const [url, setUrl] = useState([]);
+    const [name, setName] = useState("");
+    const [url, setUrl] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -36,6 +36,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             setName(tests[testIndex].name);
             setUrl(tests[testIndex].url);
             setActions(tests[testIndex].actions);
+        }
+        else {
+            setName("");
+            setUrl("");
+            setActions([]);
         }
     }, [testIndex]);
 
@@ -163,7 +168,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={()=>{
-            debugger;
             cleanUp();
             handleClose();
         }}>

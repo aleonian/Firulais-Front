@@ -135,7 +135,11 @@ export const Home = () => {
 
                 <DeleteActionConfirm
                     open={DeleteActionConfirmOpen}
-                    handleClose={() => { setDeleteActionConfirmOpen(false) }}
+                    handleClose={() => { 
+                        
+                        setTestIndex(null);
+                        setDeleteActionConfirmOpen(false); 
+                    }}
                     handleYesCase={deleteTest}
                 />
 
@@ -165,7 +169,7 @@ export const Home = () => {
                 setDeleteActionConfirmOpen(false);
                 setTestIndex(null);
                 showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
-                setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+                // setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
 
             })
             .catch(error => { 
