@@ -24,6 +24,13 @@ const create = (data) => {
   return axios.post(baseUrl, data, config);
 }
 
+const enqueue = (data) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.post(`${baseUrl}/enqueue`, data, config);
+}
+
 const erase = (data) => {
   const config = {
     headers: { Authorization: token },
@@ -38,4 +45,5 @@ const update = (data) => {
   }
   return axios.put(`${baseUrl}/${data.id}`, data, config);
 }
-export default { getAll, setToken, create, erase, update }
+
+export default { getAll, setToken, create, erase, update, enqueue }

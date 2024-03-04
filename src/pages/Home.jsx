@@ -40,8 +40,7 @@ export const Home = () => {
                     setTests(testsArray)
                 })
                 .catch(error => {
-                    setErrorMessage("Something wrong happened fetching the tests: " + error);
-                    showErrorAlertAndThenVanishIt();
+                    showErrorAlertAndThenVanishIt("Something wrong happened fetching the tests: " + error);
                 })
         }
         else {
@@ -104,10 +103,11 @@ export const Home = () => {
 
                     {
                         tests.length > 0 && (
-                            <div>
+                            <div style={{ height: 'auto', width: '50%' }}>
                                 <DataTable
                                     deleteHandler={confirmDeleteTest}
                                     editHandler={editTest}
+                                    runHandler={runJob}
                                     rows={tests.map((test, index) => (
                                         {
                                             id: test.id,
@@ -153,6 +153,16 @@ export const Home = () => {
 
         setTestIndex(index);
         setTestDialogOpen(true);
+    }
+
+    const runJob = (index) => {
+        testService.enqueue(tests[index])
+        .then(response=>{
+            showSuccessAlertAndThenVanishIt(response.data);
+        })
+        .catch(error=>{
+            showErrorAlertAndThenVanishIt(error.response.data.error);
+        })
     }
 
     const confirmDeleteTest = (index) => {
