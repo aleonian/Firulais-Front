@@ -11,6 +11,7 @@ import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
 import { TestDialog } from '../components/TestDialog';
 import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
+import { DataTable } from '../components/DataTable';
 
 import testService from '../services/tests';
 
@@ -94,29 +95,29 @@ export const Home = () => {
                         alignItems: 'center',
                     }}>
 
-                    <Button variant="contained" onClick={newTestBtnHandler}>
+                    <Button
+                        sx={{ mb: 4 }}
+                        variant="contained"
+                        onClick={newTestBtnHandler}>
                         Add new test 🧪
                     </Button>
 
                     {
                         tests.length > 0 && (
-                            <>
-                                Tests:
-                                <div>
-                                    {tests.map((test, index) => (
-                                        <div key={index}>
-                                            {test.name}
-                                            <button onClick={() => { editTest(index) }}>Edit</button>
-                                            <button onClick={() => { confirmDeleteTest(index) }}>Delete</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </>
+                            <div>
+                                <DataTable
+                                    deleteHandler={confirmDeleteTest}
+                                    editHandler={editTest}
+                                    rows={tests.map((test, index) => (
+                                        {
+                                            id: test.id,
+                                            name: test.name,
+                                            index: index,
+                                        }
+                                    ))} />
+                            </div>
                         )
                     }
-
-
-
                 </Box>
 
                 {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
@@ -135,10 +136,10 @@ export const Home = () => {
 
                 <DeleteActionConfirm
                     open={DeleteActionConfirmOpen}
-                    handleClose={() => { 
-                        
+                    handleClose={() => {
+
                         setTestIndex(null);
-                        setDeleteActionConfirmOpen(false); 
+                        setDeleteActionConfirmOpen(false);
                     }}
                     handleYesCase={deleteTest}
                 />
@@ -149,7 +150,7 @@ export const Home = () => {
     }
 
     const editTest = (index) => {
-       
+
         setTestIndex(index);
         setTestDialogOpen(true);
     }
@@ -172,9 +173,9 @@ export const Home = () => {
                 // setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
 
             })
-            .catch(error => { 
+            .catch(error => {
                 showErrorAlertAndThenVanishIt(error.response.data.error);
-                setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+                setTimeout(() => setDeleteActionConfirmOpen(false), 1000);
             })
     }
 
