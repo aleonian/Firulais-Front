@@ -1,27 +1,28 @@
 import { React, Fragment, useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, Select, FormControl, InputLabel, MenuItem, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Button, FormControl, InputLabel, TextField } from '@mui/material';
 import { Box } from '@mui/material';
+import Textarea from '@mui/joy/Textarea';
 import { ErrorSnackBar } from './ErrorSnackBar';
 
 export const ActionDialog = ({ open, handleClose, setActions, actions, actionIndex }) => {
 
     const [name, setName] = useState("");
-    const [elementId, setElementId] = useState("");
-    const [command, setCommand] = useState("");
+    const [commands, setCommands] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (actionIndex !== null) {
             setName(actions[actionIndex].name);
-            setElementId(actions[actionIndex].elementId);
-            setCommand(actions[actionIndex].command);
+            setCommands(actions[actionIndex].commands);
         }
     }, [actionIndex]);
-    
+
     const handleSubmit = (event) => {
 
         event.preventDefault();
+
+        debugger;
 
         //if !actionIndex means if this is a new action
         //if the action is not new, if it's being edited, then actionIndex will not be falsy
@@ -33,13 +34,13 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
             }
             else {
                 const newActions = [...actions];
-                newActions.push({ name, elementId, command });
+                newActions.push({ name, commands });
                 setActions(newActions);
             }
         }
         else {
             const newActions = [...actions];
-            newActions[actionIndex] = { name, elementId, command };
+            newActions[actionIndex] = { name, commands };
             setActions(newActions);
         }
         handleClose();
@@ -66,32 +67,30 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                 value={name}
                                 sx={{ mb: 4 }}
                             />
-                            <TextField
-                                type="text"
-                                variant='outlined'
-                                color='secondary'
-                                label="Element Id"
-                                onChange={e => setElementId(e.target.value)}
-                                required
-                                fullWidth
-                                value={elementId}
-                                sx={{ mb: 4 }}
-                            />
-
                             <FormControl fullWidth>
-                                <InputLabel id="selectActionLabel">Select an Action</InputLabel>
-                                <Select
+                                <Textarea
+                                    color="neutral"
+                                    placeholder="Write the action"
+                                    minRows={2}
+                                    maxRows={4}
+                                    size="lg"
+                                    variant="soft"
+                                    onChange={e => setCommands(e.target.value)}
+                                    sx={{ mb: 4 }}
+                                    value={commands}
+                                />
+                                {/* <Select
                                     labelId="selectActionLabel"
                                     // value={personName}
                                     label="Select a Command"
-                                    onChange={e => setCommand(e.target.value)}
+                                    onChange={e => setCommands(e.target.value)}
                                     required
-                                    value={command}
+                                    value={commands}
                                     sx={{ mb: 4 }}
                                 >
                                     <MenuItem key={1} value={"waitForSelector"}>waitForSelector</MenuItem>
                                     <MenuItem key={2} value={"otraVaina"}>otraVaina</MenuItem>
-                                </Select>
+                                </Select> */}
                             </FormControl>
                             {/* <Button variant="contained" sx={{ mb: 4 }} onClick={newActionBtnHandler}>
                                 Add new action
