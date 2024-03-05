@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import * as React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
@@ -18,6 +19,7 @@ import Container from '@mui/material/Container';
 
 import loginService from '../services/login';
 import testService from '../services/tests';
+import resultService from '../services/results';
 
 import { MyAlert } from './MyAlert';
 
@@ -52,6 +54,7 @@ export function LoginComponent() {
 
             window.localStorage.setItem('loggedFirulaisUser', JSON.stringify(user));
             testService.setToken(user.token);
+            resultService.setToken(user.token);
             // setUser(user)
             navigate('/');
         } catch (exception) {

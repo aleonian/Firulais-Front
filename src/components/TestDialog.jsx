@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import * as React from 'react';
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, Button, InputLabel, TextField } from '@mui/material';
@@ -81,7 +82,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     const handleActionEdit = (index) => {
-        debugger;
         setActionIndex(index);
         setActionDialogOpen(true);
     }

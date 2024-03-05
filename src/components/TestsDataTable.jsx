@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
-export function DataTable({ rows, deleteHandler, editHandler, runHandler }) {
+export function TestsDataTable({ rows, deleteHandler, editHandler, runHandler }) {
 
     const columns = [
         { field: 'name', headerName: 'Name',  width: 200},

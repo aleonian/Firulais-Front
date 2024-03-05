@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import { React, Fragment, useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, FormControl, InputLabel, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Button, FormControl, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import Textarea from '@mui/joy/Textarea';
 import { ErrorSnackBar } from './ErrorSnackBar';
@@ -29,8 +30,6 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
     const handleSubmit = (event) => {
 
         event.preventDefault();
-
-        debugger;
 
         //if !actionIndex means if this is a new action
         //if the action is not new, if it's being edited, then actionIndex will not be falsy

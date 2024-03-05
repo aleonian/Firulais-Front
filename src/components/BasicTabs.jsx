@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { TestsTab } from './TestsTab';
+import { ResultsTab } from './ResultsTab';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,15 +52,15 @@ export function BasicTabs() {
     <Box sx={{ marginTop: 10, width: '75%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Tests" {...a11yProps(0)} />
-          <Tab label="Results" {...a11yProps(1)} />
+          <Tab label="Tests 🧪" {...a11yProps(0)} />
+          <Tab label="Results 🏁 " {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <TestsTab />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Results
+        <ResultsTab />
       </CustomTabPanel>
     </Box>
   );

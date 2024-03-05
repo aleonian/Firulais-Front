@@ -2,20 +2,20 @@
 import React from "react";
 import { useEffect, useState, } from "react";
 
-import testService from '../services/tests';
+import resultService from '../services/results';
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
-import { TestDialog } from '../components/TestDialog';
-import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
-import { TestsDataTable } from '../components/TestsDataTable';
+// import { TestDialog } from '../components/TestDialog';
+// import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
+import { ResultsDataTable } from '../components/ResultsDataTable';
 
 import Button from '@mui/material/Button';
 
-export const TestsTab = () => {
-    const [TestDialogOpen, setTestDialogOpen] = useState(false);
-    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
-    const [tests, setTests] = useState([]);
-    const [testIndex, setTestIndex] = useState(null);
+export const ResultsTab = () => {
+    // const [TestDialogOpen, setTestDialogOpen] = useState(false);
+    // const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
+    const [results, setResults] = useState([]);
+    const [resultIndex, setTestIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -33,55 +33,36 @@ export const TestsTab = () => {
         setTimeout(() => setShowSuccessAlert(false), 1500);
     }
 
-    const newTestBtnHandler = () => {
-        setTestIndex(null);
-        setTestDialogOpen(true);
-    }
-
-    const runAllTestsHandler = () => {
-        debugger;
-    }
-
-
     useEffect(() => {
-
-        testService.getAll()
-            .then(testsArray => {
-                setTests(testsArray)
+        resultService.getAll()
+            .then(resultsArray => {
+                setResults(resultsArray)
             })
             .catch(error => {
-                showErrorAlertAndThenVanishIt("Something wrong happened fetching the tests: " + error);
+                showErrorAlertAndThenVanishIt("Something wrong happened fetching the results: " + error);
             })
     }, []);
 
-    const editTest = (index) => {
-
-        setTestIndex(index);
-        setTestDialogOpen(true);
-    }
-
-    const runJob = (index) => {
-        testService.enqueue(tests[index])
-            .then(response => {
-                showSuccessAlertAndThenVanishIt(response.data);
-            })
-            .catch(error => {
-                showErrorAlertAndThenVanishIt(error.response.data.error);
-            })
-    }
-
-    const confirmDeleteTest = (index) => {
+    const confirmdeleteResult = (index) => {
         setTestIndex(index);
         setDeleteActionConfirmOpen(true);
     }
 
-    const deleteTest = () => {
+    const viewResult = ()=> {
+        alert('holis!');
+    }
 
-        testService.erase(tests[testIndex])
+    const deleteAllResultsHandler = () => {
+        debugger;
+    }
+
+    const deleteResult = () => {
+
+        resultService.erase(results[resultIndex])
             .then(response => {
-                const newTests = [...tests];
-                newTests.splice(testIndex, 1);
-                setTests(newTests);
+                const newTests = [...results];
+                newTests.splice(resultIndex, 1);
+                setResults(newTests);
                 setDeleteActionConfirmOpen(false);
                 setTestIndex(null);
                 showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
@@ -99,28 +80,25 @@ export const TestsTab = () => {
             <Button
                 sx={{ mb: 4 }}
                 variant="contained"
-                onClick={newTestBtnHandler}>
-                Add new test 🧪
-            </Button>
-
-            <Button
-                sx={{ mb: 4, ml: 4 }}
-                variant="contained"
-                onClick={runAllTestsHandler}>
-                Run all tests 🏃‍♂️
+                onClick={deleteAllResultsHandler}>
+                Delete all results ❌
             </Button>
 
             {
-                tests.length > 0 && (
+                results.length > 0 && (
                     <div style={{ height: 'auto', width: '100%' }}>
-                        <TestsDataTable
-                            deleteHandler={confirmDeleteTest}
-                            editHandler={editTest}
-                            runHandler={runJob}
-                            rows={tests.map((test, index) => (
+                        <ResultsDataTable
+                            deleteHandler={confirmdeleteResult}
+                            viewResultHandler={viewResult}
+                            rows={results.map((result, index) => (
                                 {
-                                    id: test.id,
-                                    name: test.name,
+                                    id: result.id,
+                                    when: new Date(result.when).toLocaleString(),
+                                    name: result.testId.name,
+                                    url: result.testId.url,
+                                    actions: result.testId.actions,
+                                    success: result.outcome.success,
+                                    problems: result.outcome.problems ? result.outcome.problems : false,
                                     index: index,
                                 }
                             ))} />
@@ -130,15 +108,15 @@ export const TestsTab = () => {
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
             {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
 
-            <TestDialog
+            {/* <TestDialog
                 open={TestDialogOpen}
                 handleClose={() => {
                     setTestIndex(null);
                     setTestDialogOpen(false);
                 }}
-                tests={tests}
-                setTests={setTests}
-                testIndex={testIndex}
+                results={results}
+                setResults={setResults}
+                resultIndex={resultIndex}
             />
 
             <DeleteActionConfirm
@@ -148,8 +126,8 @@ export const TestsTab = () => {
                     setTestIndex(null);
                     setDeleteActionConfirmOpen(false);
                 }}
-                handleYesCase={deleteTest}
-            />
+                handleYesCase={deleteResult}
+            /> */}
         </>
     )
 }
