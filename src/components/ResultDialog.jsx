@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
+import { Grid } from '@mui/material';
 
 import { ActionDialog } from './ActionDialog';
 import { DeleteActionConfirm } from './DeleteActionConfirm';
@@ -21,7 +22,7 @@ import resultService from '../services/results'
 
 export const ResultDialog = ({ open, handleClose, results, setResults, resultIndex }) => {
 
-    
+
 
     const [ActionDialogOpen, setActionDialogOpen] = useState(false);
     const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
@@ -53,34 +54,38 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
     }
 
     function generateList() {
-        // if (actions.length > 0) {
-        //     return (
-        //         <List>
-        //             {
-        //                 actions.map((action, index) => {
-        //                     return (
-        //                         <ListItem key={action.name} secondaryAction={
-        //                             <>
-        //                                 <IconButton onClick={() => handleActionEdit(index)} edge="end" aria-label="edit">
-        //                                     <EditIcon />
-        //                                 </IconButton>
-        //                                 <IconButton onClick={() => handleActionDelete(index)} edge="end" aria-label="delete">
-        //                                     <DeleteIcon />
-        //                                 </IconButton>
-        //                             </>
-        //                         }
-        //                         >
-        //                             <ListItemText primary={action.name} />
-        //                         </ListItem>
-        //                     )
-        //                 })
-        //             }
-        //         </List>
-        //     )
-        // }
-        // else return (
-        //     "No actions defined so far?"
-        // )
+        if (resultIndex != null) {
+            debugger;
+            if (results[resultIndex].actions.length > 0) {
+                return (
+                    <List>
+                        {
+                            results[resultIndex].actions.map((action, index) => {
+                                return (
+                                    <ListItem key={action.name}>
+                                        <ListItemText primary={action.name} />
+                                        <List>
+                                            {
+                                                action.commands.split("\n").map(command => {
+                                                    return (
+                                                        <ListItem key={command}>
+                                                        <ListItemText primary={command} />
+                                                        </ListItem>
+                                                    )
+                                                })
+                                            }
+                                        </List>
+                                    </ListItem>
+                                )
+                            })
+                        }
+                    </List>
+                )
+            }
+            else return (
+                "No actions defined so far?"
+            )
+        }
     }
 
     const handleActionEdit = (index) => {
@@ -218,6 +223,51 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
 
                             <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
                         </form> */}
+
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    name="testName"
+                                    required
+                                    fullWidth
+                                    id="testName"
+                                    label="Test Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="when"
+                                    label="When"
+                                    name="when"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="result"
+                                    label="Result"
+                                    name="result"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="url"
+                                    label="Url"
+                                    id="url"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <List dense={true}>
+                                    {generateList()}
+                                </List>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Fragment>
                 {/* <ActionDialog

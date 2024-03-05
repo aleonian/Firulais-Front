@@ -49,7 +49,7 @@ export const ResultsTab = () => {
                         index: index,
                     }
                 });
-                
+                debugger;
                 setResults(processedResultsArray)
             })
             .catch(error => {

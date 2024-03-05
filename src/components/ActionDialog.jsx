@@ -12,18 +12,21 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    // useEffect(() => {
-    //     if (actionIndex !== null) {
-    //         
-    //         setName(actions[actionIndex].name);
-    //         setCommands(actions[actionIndex].commands);
-    //     }
-    // }, [actionIndex]);
+    useEffect(() => {
+        if (actionIndex !== null) {
+            
+            setName(actions[actionIndex].name);
+            setCommands(actions[actionIndex].commands);
+        }
+        else {
+            setName("");
+            setCommands("");
+        }
+    }, [actionIndex]);
 
     const cleanUp = () => {
-        // 
-        // document.getElementById('actionName').value = "";
-        // document.getElementById('actionCommands').value = "";
+        setName("");
+        setCommands("");
         setActionIndex(null);
     }
 
@@ -75,7 +78,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
                                 onChange={e => setName(e.target.value)}
                                 fullWidth
                                 required
-                                value={actionIndex != null ? actions[actionIndex].name : name}
+                                value={name}
                                 sx={{ mb: 4 }}
                             />
                             <FormControl fullWidth>
@@ -89,7 +92,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
                                     id="actionCommands"
                                     onChange={e => setCommands(e.target.value)}
                                     sx={{ mb: 4 }}
-                                    value={actionIndex != null ? actions[actionIndex].commands : commands}
+                                    value={commands}
                                 />
                                 {/* <Select
                                     labelId="selectActionLabel"
