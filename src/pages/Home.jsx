@@ -78,7 +78,7 @@ export const Home = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                    <Typography component="h1" variant="h2">
+                    <Typography component="h1" variant="h3">
                         Welcome to Firulais
                     </Typography>
                     <Typography component="h3" variant="h5">
