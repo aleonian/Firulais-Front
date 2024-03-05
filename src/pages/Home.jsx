@@ -12,6 +12,7 @@ import { TemporaryDrawer } from '../components/Navbar/Navbar';
 import { TestDialog } from '../components/TestDialog';
 import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
 import { DataTable } from '../components/DataTable';
+import { BasicTabs } from '../components/BasicTabs';
 
 import testService from '../services/tests';
 
@@ -84,8 +85,10 @@ export const Home = () => {
                     <Typography component="h3" variant="h5">
                         your friendly QA automation puppy 🐶
                     </Typography>
-                </Box>
 
+                    {/* I guess here's the place for the tabs */}
+                    <BasicTabs />
+                </Box>
                 <Box
                     sx={{
                         marginTop: 5,
@@ -157,12 +160,12 @@ export const Home = () => {
 
     const runJob = (index) => {
         testService.enqueue(tests[index])
-        .then(response=>{
-            showSuccessAlertAndThenVanishIt(response.data);
-        })
-        .catch(error=>{
-            showErrorAlertAndThenVanishIt(error.response.data.error);
-        })
+            .then(response => {
+                showSuccessAlertAndThenVanishIt(response.data);
+            })
+            .catch(error => {
+                showErrorAlertAndThenVanishIt(error.response.data.error);
+            })
     }
 
     const confirmDeleteTest = (index) => {
