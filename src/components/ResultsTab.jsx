@@ -5,17 +5,17 @@ import { useEffect, useState, } from "react";
 import resultService from '../services/results';
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
-// import { TestDialog } from '../components/TestDialog';
+import { ResultDialog } from '../components/ResultDialog';
 // import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
 import { ResultsDataTable } from '../components/ResultsDataTable';
 
 import Button from '@mui/material/Button';
 
 export const ResultsTab = () => {
-    // const [TestDialogOpen, setTestDialogOpen] = useState(false);
+    const [resultDialogOpen, setResultDialogOpen] = useState(false);
     // const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
     const [results, setResults] = useState([]);
-    const [resultIndex, setTestIndex] = useState(null);
+    const [resultIndex, setResultIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -34,9 +34,23 @@ export const ResultsTab = () => {
     }
 
     useEffect(() => {
+        let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                setResults(resultsArray)
+                processedResultsArray = resultsArray.map((result, index) => {
+                    return {
+                        id: result.id,
+                        when: new Date(result.when).toLocaleString(),
+                        name: result.testId.name,
+                        url: result.testId.url,
+                        actions: result.testId.actions,
+                        success: result.outcome.success,
+                        problems: result.outcome.problems ? result.outcome.problems : false,
+                        index: index,
+                    }
+                });
+                
+                setResults(processedResultsArray)
             })
             .catch(error => {
                 showErrorAlertAndThenVanishIt("Something wrong happened fetching the results: " + error);
@@ -44,16 +58,17 @@ export const ResultsTab = () => {
     }, []);
 
     const confirmdeleteResult = (index) => {
-        setTestIndex(index);
+        setResultIndex(index);
         setDeleteActionConfirmOpen(true);
     }
 
-    const viewResult = ()=> {
-        alert('holis!');
+    const viewResult = (index) => {
+        setResultIndex(index);
+        setResultDialogOpen(true);
     }
 
     const deleteAllResultsHandler = () => {
-        debugger;
+        
     }
 
     const deleteResult = () => {
@@ -64,7 +79,7 @@ export const ResultsTab = () => {
                 newTests.splice(resultIndex, 1);
                 setResults(newTests);
                 setDeleteActionConfirmOpen(false);
-                setTestIndex(null);
+                setResultIndex(null);
                 showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
                 // setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
 
@@ -90,40 +105,29 @@ export const ResultsTab = () => {
                         <ResultsDataTable
                             deleteHandler={confirmdeleteResult}
                             viewResultHandler={viewResult}
-                            rows={results.map((result, index) => (
-                                {
-                                    id: result.id,
-                                    when: new Date(result.when).toLocaleString(),
-                                    name: result.testId.name,
-                                    url: result.testId.url,
-                                    actions: result.testId.actions,
-                                    success: result.outcome.success,
-                                    problems: result.outcome.problems ? result.outcome.problems : false,
-                                    index: index,
-                                }
-                            ))} />
+                            rows={results} />
                     </div>
                 )
             }
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
             {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
 
-            {/* <TestDialog
-                open={TestDialogOpen}
+            <ResultDialog
+                open={resultDialogOpen}
                 handleClose={() => {
-                    setTestIndex(null);
-                    setTestDialogOpen(false);
+                    setResultIndex(null);
+                    setResultDialogOpen(false);
                 }}
                 results={results}
                 setResults={setResults}
                 resultIndex={resultIndex}
             />
 
-            <DeleteActionConfirm
+            {/* <DeleteActionConfirm
                 open={DeleteActionConfirmOpen}
                 handleClose={() => {
 
-                    setTestIndex(null);
+                    setResultIndex(null);
                     setDeleteActionConfirmOpen(false);
                 }}
                 handleYesCase={deleteResult}

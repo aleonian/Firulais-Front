@@ -14,14 +14,14 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
 
     // useEffect(() => {
     //     if (actionIndex !== null) {
-    //         debugger;
+    //         
     //         setName(actions[actionIndex].name);
     //         setCommands(actions[actionIndex].commands);
     //     }
     // }, [actionIndex]);
 
     const cleanUp = () => {
-        // debugger;
+        // 
         // document.getElementById('actionName').value = "";
         // document.getElementById('actionCommands').value = "";
         setActionIndex(null);

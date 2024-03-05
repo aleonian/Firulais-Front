@@ -39,7 +39,7 @@ export const TestsTab = () => {
     }
 
     const runAllTestsHandler = () => {
-        debugger;
+        
     }
 
 

@@ -15,12 +15,21 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                     // <button onClick={() => deleteHandler(params.row.index)}>
                     //     <DeleteIcon color="primary" />
                     // </button>
-                    <a href="#" onClick={viewResultHandler}>{params.row.name}</a>
+                    <a href="#" onClick={() => viewResultHandler(params.row.index)}>{params.row.name}</a>
                 )
             },
         },
         { field: 'when', headerName: 'When', width: 150 },
-        { field: 'success', headerName: 'Success' },
+        {
+            field: 'success',
+            headerName: 'Success',
+            renderCell: (params) => {
+                return (
+                    <>{params.row.success ? '👍' : '👎'}</>
+                )
+            },
+            width: 50,
+        },
         { field: 'url', headerName: 'Url', width: 300 },
         // {
         //     field: 'edit',
