@@ -4,25 +4,31 @@ import { Box } from '@mui/material';
 import Textarea from '@mui/joy/Textarea';
 import { ErrorSnackBar } from './ErrorSnackBar';
 
-export const ActionDialog = ({ open, handleClose, setActions, actions, actionIndex }) => {
+export const ActionDialog = ({ open, handleClose, setActions, actions, setActionIndex, actionIndex }) => {
 
     const [name, setName] = useState("");
     const [commands, setCommands] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    useEffect(() => {
-        if (actionIndex !== null) {
-            setName(actions[actionIndex].name);
-            setCommands(actions[actionIndex].commands);
-        }
-    }, [actionIndex]);
+    // useEffect(() => {
+    //     if (actionIndex !== null) {
+    //         debugger;
+    //         setName(actions[actionIndex].name);
+    //         setCommands(actions[actionIndex].commands);
+    //     }
+    // }, [actionIndex]);
+
+    const cleanUp = () => {
+        // debugger;
+        // document.getElementById('actionName').value = "";
+        // document.getElementById('actionCommands').value = "";
+        setActionIndex(null);
+    }
 
     const handleSubmit = (event) => {
 
         event.preventDefault();
-
-        debugger;
 
         //if !actionIndex means if this is a new action
         //if the action is not new, if it's being edited, then actionIndex will not be falsy
@@ -47,8 +53,11 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
     }
 
     return (
-        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
-            <DialogTitle>Create new action 🎬 for the test 🦴 for Firulais 🐶</DialogTitle>
+        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
+            cleanUp();
+            handleClose();
+        }}>
+            <DialogTitle>{actionIndex != null ? "Edit" : "Create New"} action 🎬 for the test 🦴 for Firulais 🐶</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -64,7 +73,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                 onChange={e => setName(e.target.value)}
                                 fullWidth
                                 required
-                                value={name}
+                                value={actionIndex != null ? actions[actionIndex].name : name}
                                 sx={{ mb: 4 }}
                             />
                             <FormControl fullWidth>
@@ -75,9 +84,10 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, actionInd
                                     maxRows={4}
                                     size="lg"
                                     variant="soft"
+                                    id="actionCommands"
                                     onChange={e => setCommands(e.target.value)}
                                     sx={{ mb: 4 }}
-                                    value={commands}
+                                    value={actionIndex != null ? actions[actionIndex].commands : commands}
                                 />
                                 {/* <Select
                                     labelId="selectActionLabel"

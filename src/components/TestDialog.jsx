@@ -80,13 +80,14 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
         )
     }
 
-    const handleActionEdit = (actionIndex) => {
-        setActionIndex(actionIndex);
+    const handleActionEdit = (index) => {
+        debugger;
+        setActionIndex(index);
         setActionDialogOpen(true);
     }
 
-    const handleActionDelete = (actionIndex) => {
-        setActionIndex(actionIndex);
+    const handleActionDelete = (index) => {
+        setActionIndex(index);
         setDeleteActionConfirmOpen(true);
     }
 
@@ -109,8 +110,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const handleSaveBtn = (event) => {
 
         event.preventDefault();
-       
-        if(actions.length < 1){
+
+        if (actions.length < 1) {
             showErrorAlertAndThenVanishIt("You must add at least one action!");
             return;
         }
@@ -167,7 +168,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     return (
-        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={()=>{
+        <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
             cleanUp();
             handleClose();
         }}>
@@ -204,24 +205,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 id="testUrl"
                             />
 
-                            {/* <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Actions</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    value={personName}
-                                    label="Actions"
-                                    onChange={handleChange}
-                                    required
-                                    multiple
-                                    sx={{ mb: 4 }}
-                                >
-                                    <MenuItem key={10} value={10}>Ten</MenuItem>
-                                    <MenuItem key={20} value={20}>Twenty</MenuItem>
-                                    <MenuItem key={30} value={30}>Thirty</MenuItem>
-
-                                </Select>
-                            </FormControl> */}
-
                             <InputLabel id="actions">Actions</InputLabel>
 
                             <List dense={true}>
@@ -232,6 +215,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 Add new action
                                 <PlusOneIcon />
                             </Button>
+
 
                             <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
                         </form>
@@ -245,6 +229,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                     setActions={setActions}
                     actions={actions}
                     actionIndex={actionIndex}
+                    setActionIndex={setActionIndex}
                 />
             </DialogContent>
 
