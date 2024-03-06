@@ -24,5 +24,11 @@ const erase = (data) => {
   return axios.delete(`${baseUrl}/${data.id}`, config);
 
 }
+const eraseAll = () => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.get(`${baseUrl}/erase/all`, config);
+}
 
-export default { getAll, setToken, erase, }
+export default { getAll, setToken, erase,eraseAll }

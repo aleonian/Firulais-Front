@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 export const ResultsTab = () => {
     const [resultDialogOpen, setResultDialogOpen] = useState(false);
     const [deleteResultConfirmOpen, setDeleteResultConfirmOpen] = useState(false);
+    const [deleteAllResultsConfirmOpen, setdeleteAllResultsConfirmOpen] = useState(false);
     const [results, setResults] = useState([]);
     const [resultIndex, setResultIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -37,7 +38,6 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                console.log("resultsArray->", resultsArray)
                 processedResultsArray = resultsArray.map((result, index) => {
                     return {
                         id: result.id,
@@ -59,10 +59,17 @@ export const ResultsTab = () => {
     }, []);
 
     const confirmdeleteResult = (index) => {
-        
+
         setResultIndex(index);
         setDeleteResultConfirmOpen(true);
     }
+
+    const confirmdeleteAllResults = () => {
+
+        setdeleteAllResultsConfirmOpen(true);
+    }
+
+
 
     const viewResult = (index) => {
         setResultIndex(index);
@@ -70,14 +77,23 @@ export const ResultsTab = () => {
     }
 
     const deleteAllResultsHandler = () => {
-        
+        resultService.eraseAll()
+            .then((response) => {
+                showSuccessAlertAndThenVanishIt(`Results deleted from DB! 👍`);
+                setdeleteAllResultsConfirmOpen(false);
+                setResults([]);
+            })
+            .catch(error => {
+                showErrorAlertAndThenVanishIt(error.response.data.error);
+                setTimeout(() => setDeleteResultConfirmOpen(false), 1000);
+            })
     }
 
     const deleteResult = () => {
 
         resultService.erase(results[resultIndex])
             .then(response => {
-                
+
                 const newResults = [...results];
                 newResults.splice(resultIndex, 1);
                 setResults(newResults);
@@ -88,8 +104,7 @@ export const ResultsTab = () => {
 
             })
             .catch(error => {
-                
-                showErrorAlertAndThenVanishIt(error.response.data.error);
+                showErrorAlertAndThenVanishIt(error.response.data ? error.response.data.error : error.message);
                 setTimeout(() => setDeleteResultConfirmOpen(false), 1000);
             })
     }
@@ -99,7 +114,7 @@ export const ResultsTab = () => {
             <Button
                 sx={{ mb: 4 }}
                 variant="contained"
-                onClick={deleteAllResultsHandler}>
+                onClick={confirmdeleteAllResults}>
                 Delete all results ❌
             </Button>
 
@@ -134,6 +149,13 @@ export const ResultsTab = () => {
                     setDeleteResultConfirmOpen(false);
                 }}
                 handleYesCase={deleteResult}
+            />
+            <DeleteConfirm
+                open={deleteAllResultsConfirmOpen}
+                handleClose={() => {
+                    setdeleteAllResultsConfirmOpen(false);
+                }}
+                handleYesCase={deleteAllResultsHandler}
             />
         </>
     )

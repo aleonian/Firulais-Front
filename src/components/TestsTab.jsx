@@ -38,8 +38,21 @@ export const TestsTab = () => {
         setTestDialogOpen(true);
     }
 
+    // TODO: why am i not getting the alerts in .then and .catch?
+    
     const runAllTestsHandler = () => {
-        
+        debugger;
+
+        testService.runAll()
+            .then(response => {
+                debugger;
+                showSuccessAlertAndThenVanishIt("All tests enqueued!");
+            })
+            .catch(error => {
+                debugger;
+                showErrorAlertAndThenVanishIt(error.response.data.error);
+            })
+
     }
 
 

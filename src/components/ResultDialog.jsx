@@ -134,54 +134,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
         // setUrl("");
         // setActions([]);
     }
-    const handleSaveBtn = (event) => {
-
-        // event.preventDefault();
-
-        // if (actions.length < 1) {
-        //     showErrorAlertAndThenVanishIt("You must add at least one action!");
-        //     return;
-        // }
-        // if (resultIndex === null) {
-        //     if (results.find(test => test.name === name)) {
-        //         showErrorAlertAndThenVanishIt("The test name must be unique!");
-        //         return;
-        //     }
-        //     //save to site
-        //     const newlyCreatedTest = { name, url, actions };
-        //     testService.create(newlyCreatedTest)
-        //         .then(response => {
-        //             newlyCreatedTest.id = response.data.id;
-        //             const newTests = [...results];
-        //             newTests.push(newlyCreatedTest);
-        //             setResults(newTests);
-        //             cleanUp();
-        //             showSuccessAlertAndThenVanishIt(`Test saved to DB! 👍`);
-        //             setTimeout(() => handleClose(), 1000);
-        //         })
-        //         .catch(exception => {
-        //             showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
-        //         });
-        // }
-        // else {
-        //     const updatedTest = { name, url, actions, id: results[resultIndex].id };
-        //     //TODO check that the updated test and the stored test are the same
-        //     //if they are, then do not update the test in the server
-        //     testService.update(updatedTest)
-        //         .then(response => {
-        //             const newTests = [...results];
-        //             newTests[resultIndex] = updatedTest;
-        //             setResults(newTests);
-        //             showSuccessAlertAndThenVanishIt(`Test updated to DB! 👍`);
-        //             cleanUp();
-        //             setTimeout(() => handleClose(), 1000);
-        //         })
-        //         .catch(exception => {
-        //             showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
-        //         });
-        // }
-    }
-
     const showSuccessAlertAndThenVanishIt = (successMessage) => {
         setSuccessMessage(successMessage);
         setShowSuccessAlert(true);

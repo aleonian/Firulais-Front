@@ -46,4 +46,11 @@ const update = (data) => {
   return axios.put(`${baseUrl}/${data.id}`, data, config);
 }
 
-export default { getAll, setToken, create, erase, update, enqueue }
+const runAll = () => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  return axios.get(`${baseUrl}/enqueue/all`, config);
+}
+
+export default { getAll, setToken, create, erase, update, enqueue, runAll }
