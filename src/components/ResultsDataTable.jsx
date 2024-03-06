@@ -53,17 +53,17 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                 )
             },
         },
-        // {
-        //     field: 'run',
-        //     headerName: 'Run',
-        //     renderCell: (params) => {
-        //         return (
-        //             <button onClick={() => runHandler(params.row.index)}>
-        //                 <DirectionsRunIcon color="primary" />
-        //             </button>
-        //         )
-        //     },
-        // },
+        {
+            field: 'state',
+            headerName: 'State',
+            // renderCell: (params) => {
+            //     return (
+            //         <button onClick={() => runHandler(params.row.index)}>
+            //             <DirectionsRunIcon color="primary" />
+            //         </button>
+            //     )
+            // },
+        },
     ];
 
     return (
