@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from '@mui/system';
 
 export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
 
@@ -25,7 +26,15 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
             headerName: 'Success',
             renderCell: (params) => {
                 return (
-                    <>{params.row.success ? '👍' : '👎'}</>
+                    <Box
+                        sx={{
+                            backgroundColor: params.row.success ? "green" : "red",
+                            width: "100%",
+                            height: "100%"
+                        }}
+                    >
+                        <>{params.row.success ? '👍' : '👎'}</>
+                    </Box>
                 )
             },
             width: 50,
