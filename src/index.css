@@ -10,3 +10,7 @@ h1 {
   line-height: 1.1;
 }
 
+.problem-type {
+  color: red;
+  font-weight: 500;
+}

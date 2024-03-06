@@ -238,7 +238,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                             {
                                 resultIndex != null && results[resultIndex].problems &&
                                 <Grid item xs={12}>
-                                    Problems:
                                     {/* <List dense={true}>
                                         {generateProblemsList()}
                                     </List> */}

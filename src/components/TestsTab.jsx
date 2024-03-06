@@ -112,14 +112,14 @@ export const TestsTab = () => {
         <div>
             <ButtonGroup>
                 <Button
-                    sx={{ mb: 4 }}
+                    sx={{ mb: 4, mr: 4 }}
                     variant="contained"
                     onClick={newTestBtnHandler}>
                     Add new test 🧪
                 </Button>
 
                 <Button
-                    sx={{ mb: 4, ml: 4 }}
+                    sx={{ mb: 4 }}
                     variant="contained"
                     onClick={runAllTestsHandler}>
                     Run all tests 🏃‍♂️

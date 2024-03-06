@@ -38,6 +38,7 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
+                debugger;
                 processedResultsArray = resultsArray.map((result, index) => {
                     return {
                         id: result.id,
