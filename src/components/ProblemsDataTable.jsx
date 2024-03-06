@@ -13,7 +13,6 @@ export function ProblemsDatatAble({ rows }) {
                 )
             }
         },
-        { field: 'messageType', headerName: 'Msg Type', width: 200 },
         {
             field: 'errorMessage', headerName: 'Error Msg', width: 1000,
             renderCell: (params) => {
