@@ -1,35 +1,26 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from 'react';
-import { Fragment, useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, InputLabel, TextField } from '@mui/material';
+import { Fragment, useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlusOneIcon from '@mui/icons-material/PlusOne';
 import { Grid } from '@mui/material';
 
-import { ActionDialog } from './ActionDialog';
 import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 import { ProblemsDatatAble } from './ProblemsDatatAble';
-import resultService from '../services/results'
 
-export const ResultDialog = ({ open, handleClose, results, setResults, resultIndex }) => {
-
+export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
 
-    const [ActionDialogOpen, setActionDialogOpen] = useState(false);
+
     const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
-    const [name, setName] = useState("");
-    const [url, setUrl] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -49,10 +40,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
     // }, [resultIndex]);
 
 
-    const newActionBtnHandler = () => {
-        setActionDialogOpen(true);
-    }
-
     function generateActionsList() {
         if (resultIndex != null) {
             if (results[resultIndex].actions.length > 0) {
@@ -61,13 +48,14 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                         {
                             results[resultIndex].actions.map((action, index) => {
                                 return (
-                                    <ListItem key={action.name}>
+                                    <ListItem key={`${action.name}-${index}`}>
                                         <ListItemText primary={action.name} />
                                         <List>
                                             {
-                                                action.commands.split("\n").map(command => {
+                                                action.commands.split("\n").map((command, index) => {
                                                     return (
-                                                        <ListItem key={command}>
+                                                        <ListItem key={`${command}-${index}`}>
+
                                                             <ListItemText primary={command} />
                                                         </ListItem>
                                                     )
@@ -113,11 +101,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
     //     }
     // }
 
-    const handleActionDelete = (index) => {
-        setActionIndex(index);
-        setDeleteConfirmOpen(true);
-    }
-
     const deleteAction = () => {
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
@@ -155,46 +138,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
-                        {/* <form>
-                            <TextField
-                                type="text"
-                                variant='outlined'
-                                color='secondary'
-                                label="Name"
-                                onChange={e => setName(e.target.value)}
-                                value={name}
-                                fullWidth
-                                required
-                                sx={{ mb: 4 }}
-                                id="testName"
-                            />
-                            <TextField
-                                type="text"
-                                variant='outlined'
-                                color='secondary'
-                                label="Url"
-                                onChange={e => setUrl(e.target.value)}
-                                value={url}
-                                required
-                                fullWidth
-                                sx={{ mb: 4 }}
-                                id="testUrl"
-                            />
-
-                            <InputLabel id="actions">Actions</InputLabel>
-
-                            <List dense={true}>
-                                {generateActionsList()}
-                            </List>
-
-                            <Button variant="contained" sx={{ mb: 4, display: 'block' }} onClick={newActionBtnHandler}>
-                                Add new action
-                                <PlusOneIcon />
-                            </Button>
-
-
-                            <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
-                        </form> */}
 
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={4}>
@@ -238,15 +181,13 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                             {
                                 resultIndex != null && results[resultIndex].problems &&
                                 <Grid item xs={12}>
-                                    {/* <List dense={true}>
-                                        {generateProblemsList()}
-                                    </List> */}
                                     <ProblemsDatatAble
                                         rows={
                                             results[resultIndex].problems
                                                 .map((problem, index) => {
-                                            
-                                                    return { ...problem, id: index }
+                                            debugger;
+
+                                                    return { ...problem, id: `${problem.errorMessage} - ${index}` }
                                                 })
                                         } />
                                 </Grid>

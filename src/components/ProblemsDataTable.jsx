@@ -1,8 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 export function ProblemsDatatAble({ rows }) {
 
@@ -17,7 +15,7 @@ export function ProblemsDatatAble({ rows }) {
         },
         { field: 'messageType', headerName: 'Msg Type', width: 200 },
         {
-            field: 'errorMessage', headerName: 'Error Msg', width: 400,
+            field: 'errorMessage', headerName: 'Error Msg', width: 1000,
             renderCell: (params) => {
                 if (params.row.problemType === "BAD_ACTION_COMMAND") {
                     const firstPart = params.row.errorMessage.split(": ")[0];

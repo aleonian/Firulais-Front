@@ -38,7 +38,6 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                debugger;
                 processedResultsArray = resultsArray.map((result, index) => {
                     return {
                         id: result.id,
@@ -54,7 +53,6 @@ export const ResultsTab = () => {
                 setResults(processedResultsArray)
             })
             .catch(error => {
-                debugger;
                 showErrorAlertAndThenVanishIt("Something wrong happened fetching the results: " + error);
             })
     }, []);
@@ -73,13 +71,14 @@ export const ResultsTab = () => {
 
 
     const viewResult = (index) => {
+        debugger;
         setResultIndex(index);
         setResultDialogOpen(true);
     }
 
     const deleteAllResultsHandler = () => {
         resultService.eraseAll()
-            .then((response) => {
+            .then(() => {
                 showSuccessAlertAndThenVanishIt(`Results deleted from DB! 👍`);
                 setdeleteAllResultsConfirmOpen(false);
                 setResults([]);
@@ -93,7 +92,7 @@ export const ResultsTab = () => {
     const deleteResult = () => {
 
         resultService.erase(results[resultIndex])
-            .then(response => {
+            .then(() => {
 
                 const newResults = [...results];
                 newResults.splice(resultIndex, 1);
