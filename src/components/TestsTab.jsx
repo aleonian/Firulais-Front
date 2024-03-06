@@ -10,6 +10,7 @@ import { DeleteConfirm } from '../components/DeleteConfirm';
 import { TestsDataTable } from '../components/TestsDataTable';
 
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 export const TestsTab = () => {
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
@@ -39,7 +40,7 @@ export const TestsTab = () => {
     }
 
     // TODO: why am i not getting the alerts in .then and .catch?
-    
+
     const runAllTestsHandler = () => {
         debugger;
 
@@ -108,21 +109,22 @@ export const TestsTab = () => {
     }
 
     return (
-        <>
-            <Button
-                sx={{ mb: 4 }}
-                variant="contained"
-                onClick={newTestBtnHandler}>
-                Add new test 🧪
-            </Button>
+        <div>
+            <ButtonGroup>
+                <Button
+                    sx={{ mb: 4 }}
+                    variant="contained"
+                    onClick={newTestBtnHandler}>
+                    Add new test 🧪
+                </Button>
 
-            <Button
-                sx={{ mb: 4, ml: 4 }}
-                variant="contained"
-                onClick={runAllTestsHandler}>
-                Run all tests 🏃‍♂️
-            </Button>
-
+                <Button
+                    sx={{ mb: 4, ml: 4 }}
+                    variant="contained"
+                    onClick={runAllTestsHandler}>
+                    Run all tests 🏃‍♂️
+                </Button>
+            </ButtonGroup>
             {
                 tests.length > 0 && (
                     <div style={{ height: 'auto', width: '100%' }}>
@@ -163,6 +165,6 @@ export const TestsTab = () => {
                 }}
                 handleYesCase={deleteTest}
             />
-        </>
+        </div>
     )
 }

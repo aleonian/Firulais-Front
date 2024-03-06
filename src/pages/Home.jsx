@@ -68,7 +68,6 @@ export const Home = () => {
                     <Typography component="h3" variant="h5">
                         your friendly QA automation puppy 🐶
                     </Typography>
-
                     <BasicTabs />
                 </Box>
 
