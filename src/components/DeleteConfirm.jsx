@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DraggableDialog } from './DraggableDialog'
 
-export function DeleteActionConfirm({ open, handleClose, handleYesCase }) {
+export function DeleteConfirm({ open, handleClose, handleYesCase }) {
 
     return (
         <DraggableDialog 

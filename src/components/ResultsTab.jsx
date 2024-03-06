@@ -6,14 +6,14 @@ import resultService from '../services/results';
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { ResultDialog } from '../components/ResultDialog';
-// import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
+import { DeleteConfirm } from '../components/DeleteConfirm';
 import { ResultsDataTable } from '../components/ResultsDataTable';
 
 import Button from '@mui/material/Button';
 
 export const ResultsTab = () => {
     const [resultDialogOpen, setResultDialogOpen] = useState(false);
-    // const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
+    const [deleteResultConfirmOpen, setDeleteResultConfirmOpen] = useState(false);
     const [results, setResults] = useState([]);
     const [resultIndex, setResultIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -37,6 +37,7 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
+                console.log("resultsArray->", resultsArray)
                 processedResultsArray = resultsArray.map((result, index) => {
                     return {
                         id: result.id,
@@ -49,17 +50,18 @@ export const ResultsTab = () => {
                         index: index,
                     }
                 });
-                debugger;
                 setResults(processedResultsArray)
             })
             .catch(error => {
+                debugger;
                 showErrorAlertAndThenVanishIt("Something wrong happened fetching the results: " + error);
             })
     }, []);
 
     const confirmdeleteResult = (index) => {
+        
         setResultIndex(index);
-        setDeleteActionConfirmOpen(true);
+        setDeleteResultConfirmOpen(true);
     }
 
     const viewResult = (index) => {
@@ -75,18 +77,20 @@ export const ResultsTab = () => {
 
         resultService.erase(results[resultIndex])
             .then(response => {
-                const newTests = [...results];
-                newTests.splice(resultIndex, 1);
-                setResults(newTests);
-                setDeleteActionConfirmOpen(false);
+                
+                const newResults = [...results];
+                newResults.splice(resultIndex, 1);
+                setResults(newResults);
+                setDeleteResultConfirmOpen(false);
                 setResultIndex(null);
-                showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
-                // setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+                showSuccessAlertAndThenVanishIt(`Result deleted from DB! 👍`);
+                // setTimeout(()=>setDeleteResultConfirmOpen(false), 1000);
 
             })
             .catch(error => {
+                
                 showErrorAlertAndThenVanishIt(error.response.data.error);
-                setTimeout(() => setDeleteActionConfirmOpen(false), 1000);
+                setTimeout(() => setDeleteResultConfirmOpen(false), 1000);
             })
     }
 
@@ -123,15 +127,14 @@ export const ResultsTab = () => {
                 resultIndex={resultIndex}
             />
 
-            {/* <DeleteActionConfirm
-                open={DeleteActionConfirmOpen}
+            <DeleteConfirm
+                open={deleteResultConfirmOpen}
                 handleClose={() => {
-
                     setResultIndex(null);
-                    setDeleteActionConfirmOpen(false);
+                    setDeleteResultConfirmOpen(false);
                 }}
                 handleYesCase={deleteResult}
-            /> */}
+            />
         </>
     )
 }

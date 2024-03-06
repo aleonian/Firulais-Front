@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 
 import { ActionDialog } from './ActionDialog';
-import { DeleteActionConfirm } from './DeleteActionConfirm';
+import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 
@@ -22,7 +22,7 @@ import testService from '../services/tests'
 export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) => {
 
     const [ActionDialogOpen, setActionDialogOpen] = useState(false);
-    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
+    const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
     const [name, setName] = useState("");
@@ -88,14 +88,14 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
     const handleActionDelete = (index) => {
         setActionIndex(index);
-        setDeleteActionConfirmOpen(true);
+        setDeleteConfirmOpen(true);
     }
 
     const deleteAction = () => {
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
         setActions(newActions);
-        setDeleteActionConfirmOpen(false);
+        setDeleteConfirmOpen(false);
         setActionIndex(null);
     }
 
@@ -235,9 +235,9 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
             {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
-            <DeleteActionConfirm
-                open={DeleteActionConfirmOpen}
-                handleClose={() => { setDeleteActionConfirmOpen(false) }}
+            <DeleteConfirm
+                open={DeleteConfirmOpen}
+                handleClose={() => { setDeleteConfirmOpen(false) }}
                 handleYesCase={deleteAction}
             />
 

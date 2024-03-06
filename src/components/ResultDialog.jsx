@@ -14,10 +14,10 @@ import PlusOneIcon from '@mui/icons-material/PlusOne';
 import { Grid } from '@mui/material';
 
 import { ActionDialog } from './ActionDialog';
-import { DeleteActionConfirm } from './DeleteActionConfirm';
+import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
-
+import { ProblemsDatatAble } from './ProblemsDatatAble';
 import resultService from '../services/results'
 
 export const ResultDialog = ({ open, handleClose, results, setResults, resultIndex }) => {
@@ -25,7 +25,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
 
 
     const [ActionDialogOpen, setActionDialogOpen] = useState(false);
-    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
+    const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
     const [name, setName] = useState("");
@@ -53,9 +53,8 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
         setActionDialogOpen(true);
     }
 
-    function generateList() {
+    function generateActionsList() {
         if (resultIndex != null) {
-            debugger;
             if (results[resultIndex].actions.length > 0) {
                 return (
                     <List>
@@ -69,7 +68,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                                 action.commands.split("\n").map(command => {
                                                     return (
                                                         <ListItem key={command}>
-                                                        <ListItemText primary={command} />
+                                                            <ListItemText primary={command} />
                                                         </ListItem>
                                                     )
                                                 })
@@ -87,22 +86,43 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
             )
         }
     }
-
-    const handleActionEdit = (index) => {
-        setActionIndex(index);
-        setActionDialogOpen(true);
-    }
+    // function generateProblemsList() {
+    //     if (resultIndex != null) {
+    //         
+    //         if (results[resultIndex].problems.length > 0) {
+    //             return (
+    //                 <List>
+    //                     {
+    //                         results[resultIndex].problems.map((problem, index) => {
+    //                             return (
+    //                                 <ListItem key={problem.name}>
+    //                                     <ListItemText primary={problem.problemType} />
+    //                                     <ListItemText primary={problem.errorMessage} />
+    //                                     <ListItemText primary={problem.messageType ? problem.messageType : ""} />
+    //                                     <ListItemText primary={problem.logMessage ? problem.logMessage : ""} />
+    //                                 </ListItem>
+    //                             )
+    //                         })
+    //                     }
+    //                 </List>
+    //             )
+    //         }
+    //         else return (
+    //             "No actions defined so far?"
+    //         )
+    //     }
+    // }
 
     const handleActionDelete = (index) => {
         setActionIndex(index);
-        setDeleteActionConfirmOpen(true);
+        setDeleteConfirmOpen(true);
     }
 
     const deleteAction = () => {
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
         setActions(newActions);
-        setDeleteActionConfirmOpen(false);
+        setDeleteConfirmOpen(false);
         setActionIndex(null);
     }
 
@@ -179,7 +199,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
             cleanUp();
             handleClose();
         }}>
-            <DialogTitle>Results for test {resultIndex != null && results[resultIndex].name}</DialogTitle>
+            <DialogTitle>Results details</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -212,7 +232,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                             <InputLabel id="actions">Actions</InputLabel>
 
                             <List dense={true}>
-                                {generateList()}
+                                {generateActionsList()}
                             </List>
 
                             <Button variant="contained" sx={{ mb: 4, display: 'block' }} onClick={newActionBtnHandler}>
@@ -231,8 +251,8 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     required
                                     fullWidth
                                     id="testName"
-                                    label="Test Name"
                                     autoFocus
+                                    value={resultIndex != null && results[resultIndex].name}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
@@ -240,7 +260,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     required
                                     fullWidth
                                     id="when"
-                                    label="When"
+                                    value={resultIndex != null && results[resultIndex].when}
                                     name="when"
                                 />
                             </Grid>
@@ -249,7 +269,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     required
                                     fullWidth
                                     id="result"
-                                    label="Result"
+                                    value={resultIndex != null && results[resultIndex].success ? "👍" : "👎"}
                                     name="result"
                                 />
                             </Grid>
@@ -258,15 +278,36 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     required
                                     fullWidth
                                     name="url"
-                                    label="Url"
+                                    value={resultIndex != null && results[resultIndex].url}
                                     id="url"
                                 />
                             </Grid>
+
+                            {
+                                resultIndex != null && results[resultIndex].problems &&
+                                <Grid item xs={12}>
+                                    Problems:
+                                    {/* <List dense={true}>
+                                        {generateProblemsList()}
+                                    </List> */}
+                                    <ProblemsDatatAble
+                                        rows={
+                                            results[resultIndex].problems
+                                                .map((problem, index) => {
+                                            
+                                                    return { ...problem, id: index }
+                                                })
+                                        } />
+                                </Grid>
+                            }
+
                             <Grid item xs={12} sm={6}>
+                                Actions:
                                 <List dense={true}>
-                                    {generateList()}
+                                    {generateActionsList()}
                                 </List>
                             </Grid>
+
                         </Grid>
                     </Box>
                 </Fragment>
@@ -284,13 +325,13 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
             {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
-            <DeleteActionConfirm
-                open={DeleteActionConfirmOpen}
-                handleClose={() => { setDeleteActionConfirmOpen(false) }}
+            <DeleteConfirm
+                open={DeleteConfirmOpen}
+                handleClose={() => { setDeleteConfirmOpen(false) }}
                 handleYesCase={deleteAction}
             />
 
-        </Dialog>
+        </Dialog >
     );
 };
 

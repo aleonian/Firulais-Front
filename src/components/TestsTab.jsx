@@ -6,14 +6,14 @@ import testService from '../services/tests';
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TestDialog } from '../components/TestDialog';
-import { DeleteActionConfirm } from '../components/DeleteActionConfirm';
+import { DeleteConfirm } from '../components/DeleteConfirm';
 import { TestsDataTable } from '../components/TestsDataTable';
 
 import Button from '@mui/material/Button';
 
 export const TestsTab = () => {
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
-    const [DeleteActionConfirmOpen, setDeleteActionConfirmOpen] = useState(false);
+    const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [tests, setTests] = useState([]);
     const [testIndex, setTestIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -72,7 +72,7 @@ export const TestsTab = () => {
 
     const confirmDeleteTest = (index) => {
         setTestIndex(index);
-        setDeleteActionConfirmOpen(true);
+        setDeleteConfirmOpen(true);
     }
 
     const deleteTest = () => {
@@ -82,15 +82,15 @@ export const TestsTab = () => {
                 const newTests = [...tests];
                 newTests.splice(testIndex, 1);
                 setTests(newTests);
-                setDeleteActionConfirmOpen(false);
+                setDeleteConfirmOpen(false);
                 setTestIndex(null);
                 showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
-                // setTimeout(()=>setDeleteActionConfirmOpen(false), 1000);
+                // setTimeout(()=>setDeleteConfirmOpen(false), 1000);
 
             })
             .catch(error => {
                 showErrorAlertAndThenVanishIt(error.response.data.error);
-                setTimeout(() => setDeleteActionConfirmOpen(false), 1000);
+                setTimeout(() => setDeleteConfirmOpen(false), 1000);
             })
     }
 
@@ -141,12 +141,12 @@ export const TestsTab = () => {
                 testIndex={testIndex}
             />
 
-            <DeleteActionConfirm
-                open={DeleteActionConfirmOpen}
+            <DeleteConfirm
+                open={DeleteConfirmOpen}
                 handleClose={() => {
 
                     setTestIndex(null);
-                    setDeleteActionConfirmOpen(false);
+                    setDeleteConfirmOpen(false);
                 }}
                 handleYesCase={deleteTest}
             />
