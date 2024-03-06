@@ -185,7 +185,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                         rows={
                                             results[resultIndex].problems
                                                 .map((problem, index) => {
-                                            debugger;
+                                                    debugger;
 
                                                     return { ...problem, id: `${problem.errorMessage} - ${index}` }
                                                 })
@@ -193,7 +193,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                 </Grid>
                             }
 
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12}>
                                 Actions:
                                 <List dense={true}>
                                     {generateActionsList()}
