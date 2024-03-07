@@ -4,10 +4,19 @@ import { Fragment, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
+// import { useTheme } from '@mui/material/styles';
+// import { createTheme } from '@mui/material/styles';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { Grid } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
@@ -25,6 +34,15 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+    // const theme = useTheme();
+
+    // const theme = createTheme({
+    //     palette: {
+    //         primary: {
+    //             main: '#0080FF',
+    //         },
+    //     },
+    // });
 
     // useEffect(() => {
     //     if (resultIndex !== null) {
@@ -39,7 +57,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     //     }
     // }, [resultIndex]);
 
-    function generateActionsList() {
+    function generateActionsListListVersion() {
         if (resultIndex != null && results[resultIndex].actions) {
             const actions = Object.keys(results[resultIndex].actions);
 
@@ -74,6 +92,72 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
         // Return a default value if conditions are not met
         return null;
     }
+    function generateActionsList() {
+        if (resultIndex != null && results[resultIndex].actions) {
+            const actions = Object.keys(results[resultIndex].actions);
+
+            if (actions.length > 0) {
+                return (
+                    <>
+                        {actions.map((action, index) => {
+                            const desiredAction = results[resultIndex].actions[action];
+                            return (
+                                <>
+                                    <Accordion>
+                                        <AccordionSummary
+                                            expandIcon={<ArrowDownwardIcon />}
+                                            aria-controls="panel1-content"
+                                            id="panel1-header"
+                                        // sx={{ backgroundColor: theme.palette.primary.main }}
+                                        >
+                                            <Box>
+                                                <Typography>{action}</Typography>
+                                            </Box>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            {/* <Typography> */}
+                                            <List>
+                                                {
+                                                    // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                                    desiredAction.commandLogs.map((commandLog, index) => {
+                                                        return (
+                                                            <ListItem key={`${commandLog.command}-${index}`}>
+                                                                <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                            </ListItem>
+                                                        )
+                                                    })
+                                                }
+                                            </List>
+                                            {/* </Typography> */}
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                    {/* <ListItem key={index}>
+                                        <ListItemText primary={action} />
+                                        <List>
+                                            {
+                                                // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                                desiredAction.commandLogs.map((commandLog, index) => {
+                                                    return (
+                                                        <ListItem key={`${commandLog.command}-${index}`}>
+                                                            <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                        </ListItem>
+                                                    )
+                                                })
+                                            }
+                                        </List>
+                                    </ListItem> */}
+                                </>
+                            )
+                        })}
+                    </>
+                );
+            }
+        }
+
+        // Return a default value if conditions are not met
+        return null;
+    }
 
 
     function generateActionsList2() {
@@ -93,7 +177,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                 //             {
                                 //                 // desiredAction.commandLogs.split("\n").map((command, index) => {
                                 //                 desiredAction.commandLogs.forEach((commandLog, index) => {
-                                //                     debugger;
+                                //                    
                                 //                     return (
                                 //                         <ListItem key={`${commandLog.command}-${index}`}>
                                 //                             <ListItemText primary={`${commandLog.command} ${commandLog.success ? '✅' : '❌'}`} />

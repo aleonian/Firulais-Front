@@ -38,20 +38,26 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                
+
                 processedResultsArray = resultsArray.map((result, index) => {
                     let stats = {
                         totalCommands: 0,
                         failedCommands: 0,
                         successfullCommands: 0,
                     }
-                    for (let i = 0; i < result.testId.actions.length; i++) {
-                        const list = result.testId.actions[i].commands.split("\n");
-                        result.testId.actions[i].list = list;
-                        stats.totalCommands += list.length;
-                    }
+                    for (let i = 0; i < Object.keys(result.outcome.actions).length; i++) {
 
-                    stats.failedCommands = result.outcome.problems ? result.outcome.problems.length : 0;
+                        const currentAction = Object.keys(result.outcome.actions)[i];
+                        const list = result.outcome.actions[currentAction].commandLogs;
+                        stats.totalCommands += list.length;
+                        for (let x = 0; x < list.length; x++) {
+                            if (list[x].success === false) {
+                               
+                                stats.failedCommands += 1;
+                            }
+                        }
+                    }
+                    // stats.failedCommands = result.outcome.problems ? result.outcome.problems.length : 0;
                     stats.successfullCommands = stats.totalCommands - stats.failedCommands;
                     result.stats = stats;
 
@@ -88,7 +94,7 @@ export const ResultsTab = () => {
 
 
     const viewResult = (index) => {
-        
+
         setResultIndex(index);
         setResultDialogOpen(true);
     }

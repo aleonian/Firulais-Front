@@ -25,7 +25,6 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
     }, [actionIndex]);
 
     const cleanUp = () => {
-        debugger;
         setActionIndex(null);
         setName("");
         setCommands("");
