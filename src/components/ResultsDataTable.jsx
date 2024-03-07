@@ -20,7 +20,6 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                 )
             },
         },
-        { field: 'when', headerName: 'When', width: 150 },
         {
             field: 'success',
             headerName: 'Success',
@@ -30,7 +29,11 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                         sx={{
                             backgroundColor: params.row.success ? "green" : "red",
                             width: "100%",
-                            height: "100%"
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+
                         }}
                     >
                         <>{params.row.success ? '👍' : '👎'}</>
@@ -39,6 +42,8 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
             },
             width: 50,
         },
+        { field: 'when', headerName: 'When', width: 150 },
+
         { field: 'url', headerName: 'Url', width: 300 },
         // {
         //     field: 'edit',

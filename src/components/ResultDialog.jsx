@@ -39,29 +39,74 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     //     }
     // }, [resultIndex]);
 
-
     function generateActionsList() {
+        if (resultIndex != null && results[resultIndex].actions) {
+            const actions = Object.keys(results[resultIndex].actions);
+
+            if (actions.length > 0) {
+                return (
+                    <List>
+                        {actions.map((action, index) => {
+                            const desiredAction = results[resultIndex].actions[action];
+                            return (
+                                <ListItem key={index}>
+                                    <ListItemText primary={action} />
+                                    <List>
+                                        {
+                                            // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                            desiredAction.commandLogs.map((commandLog, index) => {
+                                                return (
+                                                    <ListItem key={`${commandLog.command}-${index}`}>
+                                                        <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                    </ListItem>
+                                                )
+                                            })
+                                        }
+                                    </List>
+                                </ListItem>
+                            )
+                        })}
+                    </List>
+                );
+            }
+        }
+
+        // Return a default value if conditions are not met
+        return null;
+    }
+
+
+    function generateActionsList2() {
         if (resultIndex != null) {
-            if (results[resultIndex].actions.length > 0) {
+            if (Object.keys(results[resultIndex].actions).length > 0) {
                 return (
                     <List>
                         {
-                            results[resultIndex].actions.map((action, index) => {
+                            Object.keys(results[resultIndex].actions).forEach((action, index) => {
+                                // results[resultIndex].actions.map((action, index) => {
+                                const desiredAction = results[resultIndex].actions[action];
+                                console.log("action->", action)
+                                // return (
+                                //     <ListItem key={`${action}-${index}`}>
+                                //         <ListItemText primary={action} />
+                                //         <List>
+                                //             {
+                                //                 // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                //                 desiredAction.commandLogs.forEach((commandLog, index) => {
+                                //                     debugger;
+                                //                     return (
+                                //                         <ListItem key={`${commandLog.command}-${index}`}>
+                                //                             <ListItemText primary={`${commandLog.command} ${commandLog.success ? '✅' : '❌'}`} />
+                                //                         </ListItem>
+                                //                     )
+                                //                 })
+                                //             }
+                                //         </List>
+                                //     </ListItem>
+                                // )
                                 return (
-                                    <ListItem key={`${action.name}-${index}`}>
-                                        <ListItemText primary={action.name} />
-                                        <List>
-                                            {
-                                                action.commands.split("\n").map((command, index) => {
-                                                    return (
-                                                        <ListItem key={`${command}-${index}`}>
-
-                                                            <ListItemText primary={command} />
-                                                        </ListItem>
-                                                    )
-                                                })
-                                            }
-                                        </List>
+                                    <ListItem key={`${action}-${index}`}>
+                                        {action}
                                     </ListItem>
                                 )
                             })

@@ -39,7 +39,6 @@ export const ResultsTab = () => {
         resultService.getAll()
             .then(resultsArray => {
                 debugger;
-
                 processedResultsArray = resultsArray.map((result, index) => {
                     let stats = {
                         totalCommands: 0,
@@ -47,7 +46,9 @@ export const ResultsTab = () => {
                         successfullCommands: 0,
                     }
                     for (let i = 0; i < result.testId.actions.length; i++) {
-                        stats.totalCommands = result.testId.actions[i].commands.split("\n").length;
+                        const list = result.testId.actions[i].commands.split("\n");
+                        result.testId.actions[i].list = list;
+                        stats.totalCommands += list.length;
                     }
 
                     stats.failedCommands = result.outcome.problems ? result.outcome.problems.length : 0;
@@ -59,7 +60,7 @@ export const ResultsTab = () => {
                         when: new Date(result.when).toLocaleString(),
                         name: result.testId.name,
                         url: result.testId.url,
-                        actions: result.testId.actions,
+                        actions: result.outcome.actions,
                         success: result.outcome.success,
                         problems: result.outcome.problems ? result.outcome.problems : false,
                         stats,
@@ -87,7 +88,7 @@ export const ResultsTab = () => {
 
 
     const viewResult = (index) => {
-        debugger;
+        
         setResultIndex(index);
         setResultDialogOpen(true);
     }
