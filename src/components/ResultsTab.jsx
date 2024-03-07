@@ -38,7 +38,22 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
+                debugger;
+
                 processedResultsArray = resultsArray.map((result, index) => {
+                    let stats = {
+                        totalCommands: 0,
+                        failedCommands: 0,
+                        successfullCommands: 0,
+                    }
+                    for (let i = 0; i < result.testId.actions.length; i++) {
+                        stats.totalCommands = result.testId.actions[i].commands.split("\n").length;
+                    }
+
+                    stats.failedCommands = result.outcome.problems ? result.outcome.problems.length : 0;
+                    stats.successfullCommands = stats.totalCommands - stats.failedCommands;
+                    result.stats = stats;
+
                     return {
                         id: result.id,
                         when: new Date(result.when).toLocaleString(),
@@ -47,6 +62,7 @@ export const ResultsTab = () => {
                         actions: result.testId.actions,
                         success: result.outcome.success,
                         problems: result.outcome.problems ? result.outcome.problems : false,
+                        stats,
                         index: index,
                     }
                 });

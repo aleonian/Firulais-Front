@@ -117,6 +117,11 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
         // setUrl("");
         // setActions([]);
     }
+    const resultComment = () => {
+        return `${results[resultIndex].stats.successfullCommands} ✅\
+        ${results[resultIndex].stats.failedCommands} ❌`
+        //  Total: ${results[resultIndex].stats.totalCommands}`
+    }
     const showSuccessAlertAndThenVanishIt = (successMessage) => {
         setSuccessMessage(successMessage);
         setShowSuccessAlert(true);
@@ -164,7 +169,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                     required
                                     fullWidth
                                     id="result"
-                                    value={resultIndex != null && results[resultIndex].success ? "👍" : "👎"}
+                                    value={resultIndex != null && `${resultComment()}  ===>   ${results[resultIndex].success ? "👍" : "👎"}`}
                                     name="result"
                                 />
                             </Grid>
@@ -185,8 +190,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                         rows={
                                             results[resultIndex].problems
                                                 .map((problem, index) => {
-                                                    debugger;
-
                                                     return { ...problem, id: `${problem.errorMessage} - ${index}` }
                                                 })
                                         } />
