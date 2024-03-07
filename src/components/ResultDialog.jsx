@@ -20,8 +20,6 @@ import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 import { ProblemsDatatAble } from './ProblemsDatatAble';
 
-import '../index.css'
-
 export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
 
