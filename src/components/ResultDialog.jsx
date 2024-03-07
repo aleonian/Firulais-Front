@@ -4,9 +4,6 @@ import { Fragment, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
-// import { useTheme } from '@mui/material/styles';
-// import { createTheme } from '@mui/material/styles';
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -23,6 +20,8 @@ import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 import { ProblemsDatatAble } from './ProblemsDatatAble';
 
+import '../index.css'
+
 export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
 
@@ -34,15 +33,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
-    // const theme = useTheme();
-
-    // const theme = createTheme({
-    //     palette: {
-    //         primary: {
-    //             main: '#0080FF',
-    //         },
-    //     },
-    // });
 
     // useEffect(() => {
     //     if (resultIndex !== null) {
@@ -95,30 +85,28 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     function generateActionsList() {
         if (resultIndex != null && results[resultIndex].actions) {
             const actions = Object.keys(results[resultIndex].actions);
-
             if (actions.length > 0) {
                 return (
-                    <>
-                        {actions.map((action, index) => {
-                            const desiredAction = results[resultIndex].actions[action];
-                            return (
-                                <>
-                                    <Accordion>
+                    <div>
+                        {
+                            actions.map((action, index) => {
+                                const desiredAction = results[resultIndex].actions[action];
+                                return (
+                                    <Accordion key={`${action}-${index}`} className='accordion'>
                                         <AccordionSummary
                                             expandIcon={<ArrowDownwardIcon />}
                                             aria-controls="panel1-content"
                                             id="panel1-header"
-                                        // sx={{ backgroundColor: theme.palette.primary.main }}
+                                            // sx={{ backgroundColor: 'red' }}
+                                            className="accordion-summary-background"
                                         >
                                             <Box>
                                                 <Typography>{action}</Typography>
                                             </Box>
                                         </AccordionSummary>
                                         <AccordionDetails>
-                                            {/* <Typography> */}
                                             <List>
                                                 {
-                                                    // desiredAction.commandLogs.split("\n").map((command, index) => {
                                                     desiredAction.commandLogs.map((commandLog, index) => {
                                                         return (
                                                             <ListItem key={`${commandLog.command}-${index}`}>
@@ -128,30 +116,13 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                                     })
                                                 }
                                             </List>
-                                            {/* </Typography> */}
                                         </AccordionDetails>
                                     </Accordion>
-
-                                    {/* <ListItem key={index}>
-                                        <ListItemText primary={action} />
-                                        <List>
-                                            {
-                                                // desiredAction.commandLogs.split("\n").map((command, index) => {
-                                                desiredAction.commandLogs.map((commandLog, index) => {
-                                                    return (
-                                                        <ListItem key={`${commandLog.command}-${index}`}>
-                                                            <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
-                                                        </ListItem>
-                                                    )
-                                                })
-                                            }
-                                        </List>
-                                    </ListItem> */}
-                                </>
-                            )
-                        })}
-                    </>
-                );
+                                )
+                            })
+                        }
+                    </div>
+                )
             }
         }
 
@@ -268,7 +239,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
             handleClose();
             setTimeout(() => cleanUp(), 1000);
         }}>
-            <DialogTitle>Results details</DialogTitle>
+            <DialogTitle>Result details</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -277,6 +248,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     name="testName"
+                                    label="Name"
                                     required
                                     fullWidth
                                     id="testName"
@@ -288,6 +260,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                 <TextField
                                     required
                                     fullWidth
+                                    label="When"
                                     id="when"
                                     value={resultIndex != null && results[resultIndex].when}
                                     name="when"
@@ -327,9 +300,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
                             <Grid item xs={12} sm={6}>
                                 Actions:
-                                <List dense={true}>
-                                    {generateActionsList()}
-                                </List>
+                                {generateActionsList()}
                             </Grid>
 
                         </Grid>
