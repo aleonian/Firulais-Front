@@ -100,9 +100,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     const cleanUp = () => {
+        debugger;
         setActionIndex(null);
-        document.getElementById('testName').value = "";
-        document.getElementById('testUrl').value = "";
         setName("");
         setUrl("");
         setActions([]);
@@ -128,9 +127,9 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                     const newTests = [...tests];
                     newTests.push(newlyCreatedTest);
                     setTests(newTests);
-                    cleanUp();
                     showSuccessAlertAndThenVanishIt(`Test saved to DB! 👍`);
                     setTimeout(() => handleClose(), 1000);
+                    setTimeout(() => cleanUp(), 500);
                 })
                 .catch(exception => {
                     showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
@@ -141,13 +140,13 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             //TODO check that the updated test and the stored test are the same
             //if they are, then do not update the test in the server
             testService.update(updatedTest)
-                .then(response => {
+                .then(() => {
                     const newTests = [...tests];
                     newTests[testIndex] = updatedTest;
                     setTests(newTests);
                     showSuccessAlertAndThenVanishIt(`Test updated to DB! 👍`);
-                    cleanUp();
                     setTimeout(() => handleClose(), 1000);
+                    setTimeout(() => cleanUp(), 500);
                 })
                 .catch(exception => {
                     showErrorAlertAndThenVanishIt(`Error: ${exception.response ? exception.response.data.error : exception.message}`);
@@ -169,8 +168,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
-            cleanUp();
             handleClose();
+            setTimeout(() => cleanUp(), 500);
         }}>
             <DialogTitle>{testIndex != null ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
             <DialogContent>

@@ -38,7 +38,7 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                debugger;
+                
                 processedResultsArray = resultsArray.map((result, index) => {
                     let stats = {
                         totalCommands: 0,

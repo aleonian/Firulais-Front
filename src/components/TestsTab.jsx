@@ -148,7 +148,6 @@ export const TestsTab = () => {
             <TestDialog
                 open={TestDialogOpen}
                 handleClose={() => {
-                    setTestIndex(null);
                     setTestDialogOpen(false);
                 }}
                 tests={tests}

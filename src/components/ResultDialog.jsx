@@ -181,8 +181,8 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
-            cleanUp();
             handleClose();
+            setTimeout(() => cleanUp(), 1000);
         }}>
             <DialogTitle>Results details</DialogTitle>
             <DialogContent>
@@ -241,7 +241,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                 </Grid>
                             }
 
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={6}>
                                 Actions:
                                 <List dense={true}>
                                     {generateActionsList()}
@@ -251,16 +251,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                         </Grid>
                     </Box>
                 </Fragment>
-                {/* <ActionDialog
-                    open={ActionDialogOpen}
-                    handleClose={() => {
-                        setActionDialogOpen(false);
-                    }}
-                    setActions={setActions}
-                    actions={actions}
-                    actionIndex={actionIndex}
-                    setActionIndex={setActionIndex}
-                /> */}
             </DialogContent>
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}

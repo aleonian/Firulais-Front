@@ -14,7 +14,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
 
     useEffect(() => {
         if (actionIndex !== null) {
-            
+
             setName(actions[actionIndex].name);
             setCommands(actions[actionIndex].commands);
         }
@@ -25,9 +25,10 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
     }, [actionIndex]);
 
     const cleanUp = () => {
+        debugger;
+        setActionIndex(null);
         setName("");
         setCommands("");
-        setActionIndex(null);
     }
 
     const handleSubmit = (event) => {
@@ -53,14 +54,15 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
             newActions[actionIndex] = { name, commands };
             setActions(newActions);
         }
-        cleanUp();
         handleClose();
+        setTimeout(() => cleanUp(), 500);
     }
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
-            cleanUp();
             handleClose();
+            setTimeout(() => cleanUp(), 500);
+
         }}>
             <DialogTitle>{actionIndex != null ? "Edit" : "Create New"} action 🎬 for the test 🦴 for Firulais 🐶</DialogTitle>
             <DialogContent>
