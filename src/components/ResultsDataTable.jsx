@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box } from '@mui/system';
 
 export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
 
@@ -19,17 +20,30 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                 )
             },
         },
-        { field: 'when', headerName: 'When', width: 150 },
         {
             field: 'success',
             headerName: 'Success',
             renderCell: (params) => {
                 return (
-                    <>{params.row.success ? '👍' : '👎'}</>
+                    <Box
+                        sx={{
+                            backgroundColor: params.row.success ? "green" : "red",
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+
+                        }}
+                    >
+                        <>{params.row.success ? '👍' : '👎'}</>
+                    </Box>
                 )
             },
             width: 50,
         },
+        { field: 'when', headerName: 'When', width: 150 },
+
         { field: 'url', headerName: 'Url', width: 300 },
         // {
         //     field: 'edit',
@@ -72,11 +86,11 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
             columns={columns}
             initialState={{
                 pagination: {
-                    paginationModel: { page: 0, pageSize: 5 },
+                    paginationModel: { page: 0, pageSize: 10 },
                 },
             }}
-            pageSizeOptions={[5, 10]}
-        />
+            pageSizeOptions={[10, 50]}
+            />
         // </div>
     );
 }

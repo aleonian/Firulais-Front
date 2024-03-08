@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TemporaryDrawer } from '../components/Navbar/Navbar';
-import { BasicTabs } from '../components/BasicTabs';
+import { HomePageTabs } from '../components/HomePageTabs';
 
 import testService from '../services/tests';
 import resultService from '../services/results';
@@ -68,7 +68,7 @@ export const Home = () => {
                     <Typography component="h3" variant="h5">
                         your friendly QA automation puppy 🐶
                     </Typography>
-                    <BasicTabs />
+                    <HomePageTabs />
                 </Box>
 
                 {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}

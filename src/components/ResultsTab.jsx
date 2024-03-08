@@ -38,22 +38,44 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
+
                 processedResultsArray = resultsArray.map((result, index) => {
+                    let stats = {
+                        totalCommands: 0,
+                        failedCommands: 0,
+                        successfullCommands: 0,
+                    }
+                    for (let i = 0; i < Object.keys(result.outcome.actions).length; i++) {
+
+                        const currentAction = Object.keys(result.outcome.actions)[i];
+                        const list = result.outcome.actions[currentAction].commandLogs;
+                        stats.totalCommands += list.length;
+                        for (let x = 0; x < list.length; x++) {
+                            if (list[x].success === false) {
+                               
+                                stats.failedCommands += 1;
+                            }
+                        }
+                    }
+                    // stats.failedCommands = result.outcome.problems ? result.outcome.problems.length : 0;
+                    stats.successfullCommands = stats.totalCommands - stats.failedCommands;
+                    result.stats = stats;
+
                     return {
                         id: result.id,
                         when: new Date(result.when).toLocaleString(),
                         name: result.testId.name,
                         url: result.testId.url,
-                        actions: result.testId.actions,
+                        actions: result.outcome.actions,
                         success: result.outcome.success,
                         problems: result.outcome.problems ? result.outcome.problems : false,
+                        stats,
                         index: index,
                     }
                 });
                 setResults(processedResultsArray)
             })
             .catch(error => {
-                debugger;
                 showErrorAlertAndThenVanishIt("Something wrong happened fetching the results: " + error);
             })
     }, []);
@@ -72,13 +94,14 @@ export const ResultsTab = () => {
 
 
     const viewResult = (index) => {
+
         setResultIndex(index);
         setResultDialogOpen(true);
     }
 
     const deleteAllResultsHandler = () => {
         resultService.eraseAll()
-            .then((response) => {
+            .then(() => {
                 showSuccessAlertAndThenVanishIt(`Results deleted from DB! 👍`);
                 setdeleteAllResultsConfirmOpen(false);
                 setResults([]);
@@ -92,7 +115,7 @@ export const ResultsTab = () => {
     const deleteResult = () => {
 
         resultService.erase(results[resultIndex])
-            .then(response => {
+            .then(() => {
 
                 const newResults = [...results];
                 newResults.splice(resultIndex, 1);

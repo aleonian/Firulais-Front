@@ -5,8 +5,33 @@
   margin: 0;
 }
 
+body {
+  overflow-y: scroll; /* Always show vertical scrollbar */
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.problem-type {
+  color: red;
+  font-weight: 500;
+}
+
+.accordion .accordion-summary-background {
+  background-color: #1565c0;
+  border-radius: 10px;
+  color:white;
+}
+
+.about-img {
+  width: 30px;
+  vertical-align: middle;
+}
+
+.about-li {
+  list-style: none;
+  margin: 20px;
 }
 

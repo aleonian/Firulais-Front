@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { TestsTab } from './TestsTab';
@@ -41,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-export function BasicTabs() {
+export function HomePageTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -57,9 +56,7 @@ export function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <>
-          <TestsTab />
-        </>
+        <TestsTab />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <ResultsTab />

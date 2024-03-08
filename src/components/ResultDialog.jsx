@@ -1,35 +1,32 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from 'react';
-import { Fragment, useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, Button, InputLabel, TextField } from '@mui/material';
+import { Fragment, useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, TextField } from '@mui/material';
 import { Box } from '@mui/material';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import PlusOneIcon from '@mui/icons-material/PlusOne';
 import { Grid } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import { ActionDialog } from './ActionDialog';
 import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 import { ProblemsDatatAble } from './ProblemsDatatAble';
-import resultService from '../services/results'
 
-export const ResultDialog = ({ open, handleClose, results, setResults, resultIndex }) => {
-
+export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
 
-    const [ActionDialogOpen, setActionDialogOpen] = useState(false);
+
     const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
-    const [name, setName] = useState("");
-    const [url, setUrl] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -48,32 +45,121 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
     //     }
     // }, [resultIndex]);
 
+    function generateActionsListListVersion() {
+        if (resultIndex != null && results[resultIndex].actions) {
+            const actions = Object.keys(results[resultIndex].actions);
 
-    const newActionBtnHandler = () => {
-        setActionDialogOpen(true);
+            if (actions.length > 0) {
+                return (
+                    <List>
+                        {actions.map((action, index) => {
+                            const desiredAction = results[resultIndex].actions[action];
+                            return (
+                                <ListItem key={index}>
+                                    <ListItemText primary={action} />
+                                    <List>
+                                        {
+                                            // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                            desiredAction.commandLogs.map((commandLog, index) => {
+                                                return (
+                                                    <ListItem key={`${commandLog.command}-${index}`}>
+                                                        <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                    </ListItem>
+                                                )
+                                            })
+                                        }
+                                    </List>
+                                </ListItem>
+                            )
+                        })}
+                    </List>
+                );
+            }
+        }
+
+        // Return a default value if conditions are not met
+        return null;
+    }
+    function generateActionsList() {
+        if (resultIndex != null && results[resultIndex].actions) {
+            const actions = Object.keys(results[resultIndex].actions);
+            if (actions.length > 0) {
+                return (
+                    <div>
+                        {
+                            actions.map((action, index) => {
+                                const desiredAction = results[resultIndex].actions[action];
+                                return (
+                                    <Accordion key={`${action}-${index}`} className='accordion'>
+                                        <AccordionSummary
+                                            expandIcon={<ArrowDownwardIcon />}
+                                            aria-controls="panel1-content"
+                                            id="panel1-header"
+                                            // sx={{ backgroundColor: 'red' }}
+                                            className="accordion-summary-background"
+                                        >
+                                            <Box>
+                                                <Typography>{action}</Typography>
+                                            </Box>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <List>
+                                                {
+                                                    desiredAction.commandLogs.map((commandLog, index) => {
+                                                        return (
+                                                            <ListItem key={`${commandLog.command}-${index}`}>
+                                                                <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                            </ListItem>
+                                                        )
+                                                    })
+                                                }
+                                            </List>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                )
+                            })
+                        }
+                    </div>
+                )
+            }
+        }
+
+        // Return a default value if conditions are not met
+        return null;
     }
 
-    function generateActionsList() {
+
+    function generateActionsList2() {
         if (resultIndex != null) {
-            if (results[resultIndex].actions.length > 0) {
+            if (Object.keys(results[resultIndex].actions).length > 0) {
                 return (
                     <List>
                         {
-                            results[resultIndex].actions.map((action, index) => {
+                            Object.keys(results[resultIndex].actions).forEach((action, index) => {
+                                // results[resultIndex].actions.map((action, index) => {
+                                const desiredAction = results[resultIndex].actions[action];
+                                console.log("action->", action)
+                                // return (
+                                //     <ListItem key={`${action}-${index}`}>
+                                //         <ListItemText primary={action} />
+                                //         <List>
+                                //             {
+                                //                 // desiredAction.commandLogs.split("\n").map((command, index) => {
+                                //                 desiredAction.commandLogs.forEach((commandLog, index) => {
+                                //                    
+                                //                     return (
+                                //                         <ListItem key={`${commandLog.command}-${index}`}>
+                                //                             <ListItemText primary={`${commandLog.command} ${commandLog.success ? '✅' : '❌'}`} />
+                                //                         </ListItem>
+                                //                     )
+                                //                 })
+                                //             }
+                                //         </List>
+                                //     </ListItem>
+                                // )
                                 return (
-                                    <ListItem key={action.name}>
-                                        <ListItemText primary={action.name} />
-                                        <List>
-                                            {
-                                                action.commands.split("\n").map(command => {
-                                                    return (
-                                                        <ListItem key={command}>
-                                                            <ListItemText primary={command} />
-                                                        </ListItem>
-                                                    )
-                                                })
-                                            }
-                                        </List>
+                                    <ListItem key={`${action}-${index}`}>
+                                        {action}
                                     </ListItem>
                                 )
                             })
@@ -113,11 +199,6 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
     //     }
     // }
 
-    const handleActionDelete = (index) => {
-        setActionIndex(index);
-        setDeleteConfirmOpen(true);
-    }
-
     const deleteAction = () => {
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
@@ -134,6 +215,11 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
         // setUrl("");
         // setActions([]);
     }
+    const resultComment = () => {
+        return `${results[resultIndex].stats.successfullCommands} ✅\
+        ${results[resultIndex].stats.failedCommands} ❌`
+        //  Total: ${results[resultIndex].stats.totalCommands}`
+    }
     const showSuccessAlertAndThenVanishIt = (successMessage) => {
         setSuccessMessage(successMessage);
         setShowSuccessAlert(true);
@@ -148,58 +234,18 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
-            cleanUp();
             handleClose();
+            setTimeout(() => cleanUp(), 1000);
         }}>
-            <DialogTitle>Results details</DialogTitle>
+            <DialogTitle>Result details</DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
-                        {/* <form>
-                            <TextField
-                                type="text"
-                                variant='outlined'
-                                color='secondary'
-                                label="Name"
-                                onChange={e => setName(e.target.value)}
-                                value={name}
-                                fullWidth
-                                required
-                                sx={{ mb: 4 }}
-                                id="testName"
-                            />
-                            <TextField
-                                type="text"
-                                variant='outlined'
-                                color='secondary'
-                                label="Url"
-                                onChange={e => setUrl(e.target.value)}
-                                value={url}
-                                required
-                                fullWidth
-                                sx={{ mb: 4 }}
-                                id="testUrl"
-                            />
-
-                            <InputLabel id="actions">Actions</InputLabel>
-
-                            <List dense={true}>
-                                {generateActionsList()}
-                            </List>
-
-                            <Button variant="contained" sx={{ mb: 4, display: 'block' }} onClick={newActionBtnHandler}>
-                                Add new action
-                                <PlusOneIcon />
-                            </Button>
-
-
-                            <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
-                        </form> */}
-
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} sx={{ mt: 2 }}>
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     name="testName"
+                                    label="Name"
                                     required
                                     fullWidth
                                     id="testName"
@@ -211,6 +257,7 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                 <TextField
                                     required
                                     fullWidth
+                                    label="When"
                                     id="when"
                                     value={resultIndex != null && results[resultIndex].when}
                                     name="when"
@@ -221,8 +268,10 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     required
                                     fullWidth
                                     id="result"
-                                    value={resultIndex != null && results[resultIndex].success ? "👍" : "👎"}
+                                    value={resultIndex != null && `${resultComment()}  ===>   ${results[resultIndex].success ? "👍" : "👎"}`}
                                     name="result"
+                                    label="Outcome"
+
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -232,22 +281,18 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
                                     name="url"
                                     value={resultIndex != null && results[resultIndex].url}
                                     id="url"
+                                    label="url"
                                 />
                             </Grid>
 
                             {
                                 resultIndex != null && results[resultIndex].problems &&
                                 <Grid item xs={12}>
-                                    Problems:
-                                    {/* <List dense={true}>
-                                        {generateProblemsList()}
-                                    </List> */}
                                     <ProblemsDatatAble
                                         rows={
                                             results[resultIndex].problems
                                                 .map((problem, index) => {
-                                            
-                                                    return { ...problem, id: index }
+                                                    return { ...problem, id: `${problem.errorMessage} - ${index}` }
                                                 })
                                         } />
                                 </Grid>
@@ -255,24 +300,12 @@ export const ResultDialog = ({ open, handleClose, results, setResults, resultInd
 
                             <Grid item xs={12} sm={6}>
                                 Actions:
-                                <List dense={true}>
-                                    {generateActionsList()}
-                                </List>
+                                {generateActionsList()}
                             </Grid>
 
                         </Grid>
                     </Box>
                 </Fragment>
-                {/* <ActionDialog
-                    open={ActionDialogOpen}
-                    handleClose={() => {
-                        setActionDialogOpen(false);
-                    }}
-                    setActions={setActions}
-                    actions={actions}
-                    actionIndex={actionIndex}
-                    setActionIndex={setActionIndex}
-                /> */}
             </DialogContent>
 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}

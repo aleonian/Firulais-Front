@@ -39,26 +39,18 @@ export const TestsTab = () => {
         setTestDialogOpen(true);
     }
 
-    // TODO: why am i not getting the alerts in .then and .catch?
-
     const runAllTestsHandler = () => {
-        debugger;
-
         testService.runAll()
-            .then(response => {
-                debugger;
+            .then(() => {
                 showSuccessAlertAndThenVanishIt("All tests enqueued!");
             })
             .catch(error => {
-                debugger;
                 showErrorAlertAndThenVanishIt(error.response.data.error);
             })
-
     }
 
 
     useEffect(() => {
-
         testService.getAll()
             .then(testsArray => {
                 setTests(testsArray)
@@ -69,7 +61,7 @@ export const TestsTab = () => {
     }, []);
 
     const editTest = (index) => {
-
+        
         setTestIndex(index);
         setTestDialogOpen(true);
     }
@@ -112,14 +104,14 @@ export const TestsTab = () => {
         <div>
             <ButtonGroup>
                 <Button
-                    sx={{ mb: 4 }}
+                    sx={{ mb: 4, mr: 4 }}
                     variant="contained"
                     onClick={newTestBtnHandler}>
                     Add new test 🧪
                 </Button>
 
                 <Button
-                    sx={{ mb: 4, ml: 4 }}
+                    sx={{ mb: 4 }}
                     variant="contained"
                     onClick={runAllTestsHandler}>
                     Run all tests 🏃‍♂️
@@ -148,8 +140,8 @@ export const TestsTab = () => {
             <TestDialog
                 open={TestDialogOpen}
                 handleClose={() => {
-                    setTestIndex(null);
                     setTestDialogOpen(false);
+                    setTestIndex(null);
                 }}
                 tests={tests}
                 setTests={setTests}
@@ -159,7 +151,6 @@ export const TestsTab = () => {
             <DeleteConfirm
                 open={DeleteConfirmOpen}
                 handleClose={() => {
-
                     setTestIndex(null);
                     setDeleteConfirmOpen(false);
                 }}
