@@ -58,7 +58,7 @@ export function LoginComponent() {
             // setUser(user)
             navigate('/');
         } catch (exception) {
-            setLoginErrorMessage('Wrong credentials')
+            setLoginErrorMessage(exception.response.data.error)
             setTimeout(() => {
                 setLoginErrorMessage(null)
             }, 5000)

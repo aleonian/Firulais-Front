@@ -32,10 +32,10 @@ export const About = () => {
                         width: '50%',
                     }}>
                     <Typography component="h1" variant="h3">
-                        About Firulais 🐶
+                        Firulais 🐶
                     </Typography>
                     <Typography component="h3" variant="h5">
-                        An app developed by <a href="aleonian@telesign.com">Alejandro Leonian</a> for Telesign
+                        An app created by <a href="aleonian@telesign.com">Alejandro Leonian</a> for Telesign
                     </Typography>
 
                     <Fragment>

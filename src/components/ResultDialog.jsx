@@ -241,8 +241,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
-
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} sx={{ mt: 2 }}>
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     name="testName"
@@ -271,6 +270,8 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                     id="result"
                                     value={resultIndex != null && `${resultComment()}  ===>   ${results[resultIndex].success ? "👍" : "👎"}`}
                                     name="result"
+                                    label="Outcome"
+
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -280,6 +281,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                     name="url"
                                     value={resultIndex != null && results[resultIndex].url}
                                     id="url"
+                                    label="url"
                                 />
                             </Grid>
 
