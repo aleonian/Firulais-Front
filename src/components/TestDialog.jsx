@@ -100,6 +100,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     const cleanUp = () => {
+        
         setActionIndex(null);
         setName("");
         setUrl("");

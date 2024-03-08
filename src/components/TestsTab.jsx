@@ -61,7 +61,7 @@ export const TestsTab = () => {
     }, []);
 
     const editTest = (index) => {
-
+        
         setTestIndex(index);
         setTestDialogOpen(true);
     }
@@ -141,6 +141,7 @@ export const TestsTab = () => {
                 open={TestDialogOpen}
                 handleClose={() => {
                     setTestDialogOpen(false);
+                    setTestIndex(null);
                 }}
                 tests={tests}
                 setTests={setTests}
@@ -150,7 +151,6 @@ export const TestsTab = () => {
             <DeleteConfirm
                 open={DeleteConfirmOpen}
                 handleClose={() => {
-
                     setTestIndex(null);
                     setDeleteConfirmOpen(false);
                 }}
