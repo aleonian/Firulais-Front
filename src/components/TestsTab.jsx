@@ -39,26 +39,18 @@ export const TestsTab = () => {
         setTestDialogOpen(true);
     }
 
-    // TODO: why am i not getting the alerts in .then and .catch?
-
     const runAllTestsHandler = () => {
-        
-
         testService.runAll()
-            .then(response => {
-                
+            .then(() => {
                 showSuccessAlertAndThenVanishIt("All tests enqueued!");
             })
             .catch(error => {
-                
                 showErrorAlertAndThenVanishIt(error.response.data.error);
             })
-
     }
 
 
     useEffect(() => {
-
         testService.getAll()
             .then(testsArray => {
                 setTests(testsArray)
