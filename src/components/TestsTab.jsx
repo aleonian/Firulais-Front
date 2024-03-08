@@ -56,7 +56,6 @@ export const TestsTab = () => {
             socket.disconnect();
         })
         socket.on('connect', ()=>{
-            console.log(tests);
             console.log("Connected to the backend!")
         })
     }
@@ -153,10 +152,12 @@ export const TestsTab = () => {
     const deleteTest = () => {
 
         testService.erase(tests[testIndex])
-            .then(response => {
-                const newTests = [...tests];
-                newTests.splice(testIndex, 1);
-                setTests(newTests);
+            .then(() => {
+                setTests((prevTests) => {
+                    const newTests = [...prevTests];
+                    newTests.splice(testIndex, 1);
+                    return newTests;
+                });
                 setDeleteConfirmOpen(false);
                 setTestIndex(null);
                 showSuccessAlertAndThenVanishIt(`Test deleted from DB! 👍`);
