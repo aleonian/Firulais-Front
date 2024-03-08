@@ -9,6 +9,9 @@ import { TestDialog } from '../components/TestDialog';
 import { DeleteConfirm } from '../components/DeleteConfirm';
 import { TestsDataTable } from '../components/TestsDataTable';
 
+import { wait } from "../util/tools";
+
+
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
@@ -21,6 +24,8 @@ export const TestsTab = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+    const [testStateUpdateTimer, setTestStateUpdateTimer] = useState(null);
+    const [busy, setBusy] = useState(false);
 
     const showErrorAlertAndThenVanishIt = (errorMessage) => {
         setErrorMessage(errorMessage);
@@ -49,7 +54,27 @@ export const TestsTab = () => {
             })
     }
 
+    const updateTestState = (index) => {
+        testService.getActive()
+            .then((response) => {
+                debugger;
+                const newTests = [...tests];
+                const updatedTest = newTests[index];
+                if (response != -1) {
+                    updatedTest.state = true;
+                }
+                else {
+                    updatedTest.state = false;
+                    clearInterval(testStateUpdateTimer);
+                }
+                newTests[index] = updatedTest;
+                setTests(newTests);
+            })
+            .catch(error => {
+                debugger;
 
+            })
+    }
     useEffect(() => {
         testService.getAll()
             .then(testsArray => {
@@ -61,7 +86,7 @@ export const TestsTab = () => {
     }, []);
 
     const editTest = (index) => {
-        
+
         setTestIndex(index);
         setTestDialogOpen(true);
     }
@@ -70,6 +95,14 @@ export const TestsTab = () => {
         testService.enqueue(tests[index])
             .then(response => {
                 showSuccessAlertAndThenVanishIt(response.data);
+                // now we have to somehow check every second and update the corresponding 
+                // 'state' icon for the running task
+                setBusy(true);
+                wait(3000)
+                    .then(() => {
+                        const testStateUpdateTimer = setInterval(() => { updateTestState(index) }, 2000);
+                        setTestStateUpdateTimer(testStateUpdateTimer);
+                    })
             })
             .catch(error => {
                 showErrorAlertAndThenVanishIt(error.response.data.error);
@@ -129,6 +162,7 @@ export const TestsTab = () => {
                                     id: test.id,
                                     name: test.name,
                                     index: index,
+                                    state: test.state,
                                 }
                             ))} />
                     </div>

@@ -17,11 +17,28 @@ const getAll = () => {
   return request.then(response => response.data);
 }
 
+const get = (testId) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.get(`${baseUrl}/${testId}`, config);
+
+  return request.then(response => response.data);
+}
+const getActive = () => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.get(`${baseUrl}/active`, config);
+
+  return request.then(response => response.data);
+}
+
 const create = (data) => {
   const config = {
     headers: { Authorization: token },
   }
-  return axios.post(baseUrl, data, config);
+  return axios.post(baseUrl + "/add", data, config);
 }
 
 const enqueue = (data) => {
@@ -53,4 +70,4 @@ const runAll = () => {
   return axios.get(`${baseUrl}/enqueue/all`, config);
 }
 
-export default { getAll, setToken, create, erase, update, enqueue, runAll }
+export default { getAll, setToken, create, erase, update, enqueue, runAll, get, getActive }

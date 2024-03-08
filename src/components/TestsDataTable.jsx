@@ -3,18 +3,19 @@ import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import { Box } from '@mui/material';
 
 export function TestsDataTable({ rows, deleteHandler, editHandler, runHandler }) {
 
     const columns = [
-        { field: 'name', headerName: 'Name',  width: 200},
+        { field: 'name', headerName: 'Name', width: 200 },
         {
             field: 'edit',
             headerName: 'Edit',
             renderCell: (params) => {
                 return (
                     <button onClick={() => editHandler(params.row.index)}>
-                        <EditIcon color="primary"/>
+                        <EditIcon color="primary" />
                     </button>
                 )
             },
@@ -41,19 +42,31 @@ export function TestsDataTable({ rows, deleteHandler, editHandler, runHandler })
                 )
             },
         },
+        {
+            field: 'state',
+            headerName: 'State',
+            renderCell: (params) => {
+                debugger;
+                return (
+                    <Box sx={{ fontSize: '30px' }}>
+                        {params.row.state ? '⏱' : '💤'}
+                    </Box>
+                )
+            },
+        },
     ];
 
     return (
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: { page: 0, pageSize: 10 },
-                    },
-                }}
-                pageSizeOptions={[10, 50]}
-            />
+        <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+                pagination: {
+                    paginationModel: { page: 0, pageSize: 10 },
+                },
+            }}
+            pageSizeOptions={[10, 50]}
+        />
         // </div>
     );
 }
