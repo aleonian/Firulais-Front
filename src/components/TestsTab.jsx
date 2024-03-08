@@ -10,6 +10,7 @@ import { DeleteConfirm } from '../components/DeleteConfirm';
 import { TestsDataTable } from '../components/TestsDataTable';
 
 import { wait } from "../util/tools";
+import io from 'socket.io-client';
 
 
 import Button from '@mui/material/Button';
@@ -18,7 +19,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 export const TestsTab = () => {
     const [TestDialogOpen, setTestDialogOpen] = useState(false);
     const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-    const [tests, setTests] = useState([]);
+    const [tests, setTests] = useState(null);
     const [testIndex, setTestIndex] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -26,6 +27,58 @@ export const TestsTab = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [testStateUpdateTimer, setTestStateUpdateTimer] = useState(null);
     const [busy, setBusy] = useState(false);
+    let socket;
+
+    useEffect(() => {
+        testService.getAll()
+            .then(testsArray => {
+                setTests(testsArray);
+                connectToWS();
+            })
+            .catch(error => {
+                showErrorAlertAndThenVanishIt("Something wrong happened fetching the tests: " + error);
+            })
+    }, []);
+
+    const connectToWS = () => {
+        debugger;
+
+        const socket = io(import.meta.env.VITE_APP_WS_SERVER);
+
+        socket.on('connect_error', (error) => {
+            console.log("Error ws: ", error)
+        })
+
+        socket.on('taskStatus', (testObject) => {
+            updateTestState(testObject);
+        })
+        socket.on('disconnect', ()=>{
+            socket.disconnect();
+        })
+        socket.on('connect', ()=>{
+            console.log(tests);
+            console.log("Connected to the backend!")
+        })
+    }
+    // useEffect(() => {
+    //     debugger;
+
+    //     if (socket) return;
+
+    //     const socket = io(import.meta.env.VITE_APP_WS_SERVER);
+
+    //     socket.on('connect_error', (error) => {
+    //         console.log("Error ws: ", error)
+    //     })
+
+    //     socket.on('taskStatus', (testObject) => {
+    //         updateTestState(testObject);
+    //     })
+    //     // Clean up
+    //     return () => {
+    //         socket.disconnect();
+    //     };
+    // }, [tests]);
 
     const showErrorAlertAndThenVanishIt = (errorMessage) => {
         setErrorMessage(errorMessage);
@@ -54,36 +107,19 @@ export const TestsTab = () => {
             })
     }
 
-    const updateTestState = (index) => {
-        testService.getActive()
-            .then((response) => {
-                debugger;
-                const newTests = [...tests];
-                const updatedTest = newTests[index];
-                if (response != -1) {
-                    updatedTest.state = true;
-                }
-                else {
-                    updatedTest.state = false;
-                    clearInterval(testStateUpdateTimer);
-                }
-                newTests[index] = updatedTest;
-                setTests(newTests);
-            })
-            .catch(error => {
-                debugger;
-
-            })
+    const updateTestState = (testObject) => {
+        debugger;
+        setTests((prevTests) => {
+            const newTests = [...prevTests];
+            const updatedTestIndex = newTests.findIndex(test => test.id === testObject.id);
+            if (updatedTestIndex !== -1) {
+                newTests[updatedTestIndex] = testObject;
+            }
+            return newTests;
+        });
     }
-    useEffect(() => {
-        testService.getAll()
-            .then(testsArray => {
-                setTests(testsArray)
-            })
-            .catch(error => {
-                showErrorAlertAndThenVanishIt("Something wrong happened fetching the tests: " + error);
-            })
-    }, []);
+
+    
 
     const editTest = (index) => {
 
@@ -97,12 +133,12 @@ export const TestsTab = () => {
                 showSuccessAlertAndThenVanishIt(response.data);
                 // now we have to somehow check every second and update the corresponding 
                 // 'state' icon for the running task
-                setBusy(true);
-                wait(3000)
-                    .then(() => {
-                        const testStateUpdateTimer = setInterval(() => { updateTestState(index) }, 2000);
-                        setTestStateUpdateTimer(testStateUpdateTimer);
-                    })
+                // setBusy(true);
+                // wait(3000)
+                //     .then(() => {
+                //         const testStateUpdateTimer = setInterval(() => { updateTestState(index) }, 2000);
+                //         setTestStateUpdateTimer(testStateUpdateTimer);
+                //     })
             })
             .catch(error => {
                 showErrorAlertAndThenVanishIt(error.response.data.error);
@@ -151,7 +187,7 @@ export const TestsTab = () => {
                 </Button>
             </ButtonGroup>
             {
-                tests.length > 0 && (
+                tests && tests.length > 0 && (
                     <div style={{ height: 'auto', width: '100%' }}>
                         <TestsDataTable
                             deleteHandler={confirmDeleteTest}
