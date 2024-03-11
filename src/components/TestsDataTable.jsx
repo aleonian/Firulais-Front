@@ -46,7 +46,7 @@ export function TestsDataTable({ rows, deleteHandler, editHandler, runHandler })
             field: 'state',
             headerName: 'State',
             renderCell: (params) => {
-                debugger;
+                
                 return (
                     <Box sx={{ fontSize: '30px' }}>
                         {params.row.state ? '⏱' : '💤'}

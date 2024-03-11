@@ -17,6 +17,7 @@ export const ResultsTab = () => {
     const [deleteAllResultsConfirmOpen, setdeleteAllResultsConfirmOpen] = useState(false);
     const [results, setResults] = useState([]);
     const [resultIndex, setResultIndex] = useState(null);
+    const [resultId, setResultId] = useState(null);
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -52,7 +53,7 @@ export const ResultsTab = () => {
                         stats.totalCommands += list.length;
                         for (let x = 0; x < list.length; x++) {
                             if (list[x].success === false) {
-                               
+
                                 stats.failedCommands += 1;
                             }
                         }
@@ -80,9 +81,9 @@ export const ResultsTab = () => {
             })
     }, []);
 
-    const confirmdeleteResult = (index) => {
-
-        setResultIndex(index);
+    const confirmdeleteResult = (resultId) => {
+        
+        setResultId(resultId);
         setDeleteResultConfirmOpen(true);
     }
 
@@ -113,8 +114,9 @@ export const ResultsTab = () => {
     }
 
     const deleteResult = () => {
-
-        resultService.erase(results[resultIndex])
+        debugger;
+        const resultToBeRemoved = results.find(result => result.id === resultId);
+        resultService.erase(resultToBeRemoved)
             .then(() => {
 
                 const newResults = [...results];
@@ -168,7 +170,7 @@ export const ResultsTab = () => {
             <DeleteConfirm
                 open={deleteResultConfirmOpen}
                 handleClose={() => {
-                    setResultIndex(null);
+                    setResultId(null);
                     setDeleteResultConfirmOpen(false);
                 }}
                 handleYesCase={deleteResult}

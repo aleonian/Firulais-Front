@@ -41,7 +41,7 @@ export const TestsTab = () => {
     }, []);
 
     const connectToWS = () => {
-        debugger;
+        
 
         const socket = io(import.meta.env.VITE_APP_WS_SERVER);
 
@@ -60,7 +60,7 @@ export const TestsTab = () => {
         })
     }
     // useEffect(() => {
-    //     debugger;
+    //     
 
     //     if (socket) return;
 
@@ -107,7 +107,7 @@ export const TestsTab = () => {
     }
 
     const updateTestState = (testObject) => {
-        debugger;
+        
         setTests((prevTests) => {
             const newTests = [...prevTests];
             const updatedTestIndex = newTests.findIndex(test => test.id === testObject.id);

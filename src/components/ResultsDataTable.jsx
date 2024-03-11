@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box } from '@mui/system';
 
 export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
-
     const columns = [
         {
             field: 'name',
@@ -61,7 +60,7 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
             headerName: 'Delete',
             renderCell: (params) => {
                 return (
-                    <button onClick={() => deleteHandler(params.row.index)}>
+                    <button onClick={() => deleteHandler(params.row.id)}>
                         <DeleteIcon color="primary" />
                     </button>
                 )
