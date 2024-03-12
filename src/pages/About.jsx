@@ -4,8 +4,6 @@ import { TemporaryDrawer } from '../components/Navbar/Navbar';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
 export const About = () => {
 
@@ -37,15 +35,17 @@ export const About = () => {
                     <Typography component="h3" variant="h5">
                         An app created by <a href="aleonian@telesign.com">Alejandro Leonian</a> for Telesign
                     </Typography>
-
+                    <Typography component="p" sx={{ textAlign: 'center', marginTop:1.5 }}>
+                        Firulais is a Puppeteer based QA bot. Some kind of &apos;frontend&apos; for the Puppeteer library. You write tests for the doggy and he'll let you know how it all turned out.
+                    </Typography>
                     <Fragment>
                         {/* <Card>
                             <CardContent> */}
-                        <Typography 
-                        variant="p" 
-                        color="text.secondary" 
-                        gutterBottom
-                        mt={5}
+                        <Typography
+                            variant="p"
+                            color="text.secondary"
+                            gutterBottom
+                            mt={5}
                         >
                             Frontend:
                             <ul>
