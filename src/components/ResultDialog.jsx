@@ -200,7 +200,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     // }
 
     const deleteAction = () => {
-        debugger;
+        
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
         setActions(newActions);

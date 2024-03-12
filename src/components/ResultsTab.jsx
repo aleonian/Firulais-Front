@@ -114,7 +114,7 @@ export const ResultsTab = () => {
     }
 
     const deleteResult = () => {
-        debugger;
+        
         const resultToBeRemoved = results.find(result => result.id === resultId);
         resultService.erase(resultToBeRemoved)
             .then(() => {
