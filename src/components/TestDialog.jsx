@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
+import Stack from '@mui/material/Stack';
 
 import { ActionDialog } from './ActionDialog';
 import { DeleteConfirm } from './DeleteConfirm';
@@ -27,6 +28,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const [actionIndex, setActionIndex] = useState(null);
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
+    const [authUser, setAuthUser] = useState("");
+    const [authPass, setAuthPass] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -37,11 +40,15 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             setName(tests[testIndex].name);
             setUrl(tests[testIndex].url);
             setActions(tests[testIndex].actions);
+            setAuthUser(tests[testIndex].authUser);
+            setAuthPass(tests[testIndex].authPass);
         }
         else {
             setName("");
             setUrl("");
             setActions([]);
+            setAuthUser("");
+            setAuthPass("");
         }
     }, [testIndex]);
 
@@ -100,7 +107,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     }
 
     const cleanUp = () => {
-        
+
         setActionIndex(null);
         setName("");
         setUrl("");
@@ -120,7 +127,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 return;
             }
             //save to site
-            const newlyCreatedTest = { name, url, actions };
+            const newlyCreatedTest = { name, url, actions, authUser, authPass };
             testService.create(newlyCreatedTest)
                 .then(response => {
                     newlyCreatedTest.id = response.data.id;
@@ -136,7 +143,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 });
         }
         else {
-            const updatedTest = { name, url, actions, id: tests[testIndex].id };
+            const updatedTest = { name, url, actions, id: tests[testIndex].id, authUser, authPass };
             //TODO check that the updated test and the stored test are the same
             //if they are, then do not update the test in the server
             testService.update(updatedTest)
@@ -204,6 +211,30 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 id="testUrl"
                             />
 
+                            <Stack direction="row">
+                                <TextField
+                                    type="text"
+                                    variant='outlined'
+                                    color='secondary'
+                                    label="authUser"
+                                    onChange={e => setAuthUser(e.target.value)}
+                                    value={authUser}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 4 }}
+                                />
+                                <TextField
+                                    type="text"
+                                    variant='outlined'
+                                    color='secondary'
+                                    label="authPass"
+                                    onChange={e => setAuthPass(e.target.value)}
+                                    value={authPass}
+                                    required
+                                    fullWidth
+                                    sx={{ mb: 4 }}
+                                />
+                            </Stack>
                             <InputLabel id="actions">Actions</InputLabel>
 
                             <List dense={true}>

@@ -57,6 +57,7 @@ const erase = (data) => {
 }
 
 const update = (data) => {
+  console.log(data);
   const config = {
     headers: { Authorization: token },
   }
