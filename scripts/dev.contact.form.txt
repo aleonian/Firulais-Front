@@ -1,0 +1,17 @@
+button-click .osano-cm-accept
+type #FirstName Alejandro
+type #LastName Leonian 
+type #Email  aleonian@telesign.com 
+type #Phone 0800-48327583923 
+type #Title Developer 
+type #Company Telesign
+select #Country Colombia
+select #Prevent_account_takeover_Know_your_custo__c Something else?
+type #Contact_Form_Comments__c Just testing the form
+checkbox-click #Privacy_Notice_Accepted__c
+checkbox-click #Subscribed_to_all_communications_Sales__c
+button-click #FirstName
+scroll-bottom
+wait 3000
+button-click #mktoForm_1371 > div.mktoButtonRow > span > button
+text-search We look forward to our conversation

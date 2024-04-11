@@ -1,0 +1,11 @@
+select #myData IN
+text-search 0.0648
+select #myData JP
+text-search 0.0719
+select #myData GB
+text-search 0.048
+select #myData ES
+text-search 0.0805
+select #myData IT
+text-search 0.0997
+wait 5000
