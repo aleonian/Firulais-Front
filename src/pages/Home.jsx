@@ -63,10 +63,10 @@ export const Home = () => {
                         alignItems: 'center',
                     }}>
                     <Typography component="h1" variant="h3">
-                        Welcome to Firulais
+                       Firulais 🐶
                     </Typography>
                     <Typography component="h3" variant="h5">
-                        your friendly QA automation puppy 🐶
+                        Your friendly QA automation puppy.
                     </Typography>
                     <HomePageTabs />
                 </Box>
