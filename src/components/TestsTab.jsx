@@ -7,6 +7,7 @@ import { ErrorSnackBar } from '../components/ErrorSnackBar';
 import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TestDialog } from '../components/TestDialog';
 import { DeleteConfirm } from '../components/DeleteConfirm';
+import { TestsDataTableFilter } from '../components/TestsDataTableFilter';
 import { TestsDataTable } from '../components/TestsDataTable';
 
 import { wait } from "../util/tools";
@@ -190,7 +191,7 @@ export const TestsTab = () => {
             {
                 tests && tests.length > 0 && (
                     <div style={{ height: 'auto', width: '100%' }}>
-                        <TestsDataTable
+                        <TestsDataTableFilter
                             deleteHandler={confirmDeleteTest}
                             editHandler={editTest}
                             runHandler={runJob}
