@@ -1,0 +1,15 @@
+button-click .osano-cm-dialog__close
+wait-for-selector #FirstName
+get-current-url var-original-url
+type #FirstName Alejandro
+type #LastName  Leonian
+type #Email aleonian@telesign.com
+type #Title Developer
+type #Company Telesign
+select #Country Colombia
+checkbox-click #Privacy_Notice_Accepted__c
+button-click .mktoButton
+wait 8000
+get-current-url var-last-url
+compare-not-equal var-original-url var-last-url
+compare-equal var-last-url https://www.telesign.com/asset/reduce-friction-and-combat-fraud-in-e-commerce

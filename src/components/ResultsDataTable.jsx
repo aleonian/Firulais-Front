@@ -9,7 +9,7 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
         {
             field: 'name',
             headerName: 'Name',
-            width: 150,
+            width: 400,
             renderCell: (params) => {
                 return (
                     // <button onClick={() => deleteHandler(params.row.index)}>

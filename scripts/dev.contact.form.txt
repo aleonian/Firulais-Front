@@ -14,4 +14,4 @@ button-click #FirstName
 scroll-bottom
 wait 3000
 button-click #mktoForm_1371 > div.mktoButtonRow > span > button
-text-search We look forward to our conversation
+text-find We look forward to our conversation

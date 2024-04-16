@@ -1,0 +1,21 @@
+button-click .osano-cm-dialog__close
+button-click #videoPreviewCTAbutton p.text-telesign-emerald-500
+wait-for-selector video
+get-video-duration var-video-duration
+set-video-current-time 298
+video-play
+wait-for-selector-visible #marketo-form
+type #FirstName Alejandro
+type #LastName Leonian
+type #Email aleonian@telesign.com
+type #Title Developer
+type #Company Telesign
+select #Country Colombia
+checkbox-click #Privacy_Notice_Accepted__c
+button-click .mktoButton
+wait 5000
+set-video-current-time var-video-duration
+video-play
+wait 3000
+get-video-current-time var-video-current-time
+compare-greater-equal var-video-current-time var-video-duration

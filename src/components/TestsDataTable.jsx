@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 export function TestsDataTable({ rows, deleteHandler, editHandler, runHandler }) {
 
     const columns = [
-        { field: 'name', headerName: 'Name', width: 200 },
+        { field: 'name', headerName: 'Name', width: 400 },
         {
             field: 'edit',
             headerName: 'Edit',

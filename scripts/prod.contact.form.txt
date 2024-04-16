@@ -11,5 +11,5 @@ type #Contact_Form_Comments__c Just testing the form
 checkbox-click #Privacy_Notice_Accepted__c
 checkbox-click #Subscribed_to_all_communications_Sales__c
 button-click #mktoForm_1006 > div.mktoButtonRow > span > button 
-text-search We look forward to our conversation
-text-search TeleBot
+text-find We look forward to our conversation
+text-find TeleBot
