@@ -13,12 +13,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { DeleteConfirm } from './DeleteConfirm';
 import { ErrorSnackBar } from './ErrorSnackBar';
 import { SuccessSnackbar } from './SuccessSnackbar';
 import { ProblemsDatatAble } from './ProblemsDatatAble';
+import { Details } from './Details';
 
 export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
@@ -106,9 +106,11 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                             <List>
                                                 {
                                                     desiredAction.commandLogs.map((commandLog, index) => {
+                                                        debugger;
                                                         return (
                                                             <ListItem key={`${commandLog.command}-${index}`}>
                                                                 <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
+                                                                {commandLog.data ? <Details data={commandLog.data} /> : ""}
                                                             </ListItem>
                                                         )
                                                     })
@@ -200,7 +202,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     // }
 
     const deleteAction = () => {
-        
+
         const newActions = [...actions];
         newActions.splice(actionIndex, 1);
         setActions(newActions);
