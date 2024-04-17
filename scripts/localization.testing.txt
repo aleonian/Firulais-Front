@@ -1,0 +1,27 @@
+// at https://www.telesign.com/products/verify-api
+get-attr-lang var-page-lang-attr
+compare-equal var-page-lang-attr en-US
+text-find Seven verification channels. One API.
+text-find Customize your verification experience by market need, customer preference, or business priority. Verify API delivers a better, more complete user experience—all while saving development time and resources.
+//check the link text
+save-data-in-variable var-desired-cta-text-content Talk to sales
+get-text-content var-cta-text-content a.btn-cta.primary-cta
+compare-equal var-cta-text-content  var-desired-cta-text-content
+//check the link href
+save-data-in-variable var-expected-cta-href /contact-sales
+get-link-href var-cta-href a.btn-cta.primary-cta
+compare-equal var-cta-href var-expected-cta-href
+
+// Spanish check
+goto https://www.telesign.com/es/productos/verify-api
+save-data-in-variable var-desdired-lang-attr es
+get-attr-lang var-page-lang-attr
+compare-equal var-page-lang-attr var-desdired-lang-attr es
+text-find Siete canales de verificación. Una API.
+text-find Personaliza tu experiencia de verificación según las necesidades del mercado, las preferencias de los clientes o las prioridades comerciales.
+save-data-in-variable var-desired-cta-text-content Hablemos
+get-text-content var-cta-text-content a.btn-cta.primary-cta
+compare-equal var-cta-text-content  var-desired-cta-text-content
+save-data-in-variable var-expected-cta-href /es/hablemos
+get-link-href var-cta-href a.btn-cta.primary-cta
+compare-equal var-cta-href var-expected-cta-href

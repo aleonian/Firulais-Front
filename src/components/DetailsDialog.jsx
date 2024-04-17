@@ -23,6 +23,7 @@ export function DetailsDialog({ open, handleClose, title, data }) {
     return (
         <React.Fragment>
             <Dialog
+                fullScreen
                 open={open}
                 onClose={handleClose}
                 PaperComponent={PaperComponent}
@@ -33,6 +34,7 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
+                        {/* What kind of data are we trying to display? */}
                         {data.name === "check-image-tags" && data.value.map(imgObj => {
                             return (
                                 <>
@@ -62,6 +64,14 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                                     {data.value.secondOperand}
                                 </div>
                                 <hr />
+                            </>
+                        }
+                        {data.name === "take-pic" &&
+                            <>
+                                <div>
+                                    <b>Snapshot:</b>
+                                    <img src={`data:image/png;base64,${data.value}`} alt="Snapshot" />
+                                </div>
                             </>
                         }
                     </DialogContentText>
