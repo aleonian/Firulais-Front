@@ -77,7 +77,7 @@ export function TestsDataTableFilter({ rows, deleteHandler, editHandler, runHand
 
 
     return (
-        <Box sx={{ height: 400, width: 1 }}>
+        <Box sx={{ height: 600}}>
             <DataGrid
                 rows={rows}
                 disableColumnFilter

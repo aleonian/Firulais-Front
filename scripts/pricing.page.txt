@@ -1,11 +1,16 @@
 select #myData IN
-text-find 0.0648
-select #myData JP
-text-find 0.0719
+text-find 0.0683
 select #myData GB
-text-find 0.048
+text-find 0.0528
 select #myData ES
-text-find 0.0805
-select #myData IT
-text-find 0.0997
-wait 5000
+text-find 0.079
+
+
+goto https://www.telesign.com/pricing/numbers-and-sender-ids
+select #myData GB
+get-text-content var-price-amount #pricingTableContent > div > div:nth-child(1) > div.priceColumn > p > a 
+save-data-in-variable var-button-text Talk to sales
+compare-equal var-price-amount var-button-text
+save-data-in-variable var-desired-href https://www.telesign.com/contact-sales
+get-link-href var-button-href #pricingTableContent > div > div:nth-child(1) > div.priceColumn > p > a 
+compare-equal var-desired-href var-button-href
