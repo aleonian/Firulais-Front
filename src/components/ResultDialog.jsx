@@ -106,7 +106,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                                             <List>
                                                 {
                                                     desiredAction.commandLogs.map((commandLog, index) => {
-                                                        debugger;
                                                         return (
                                                             <ListItem key={`${commandLog.command}-${index}`}>
                                                                 <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />

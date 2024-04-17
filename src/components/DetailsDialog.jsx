@@ -44,7 +44,7 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                                         {imgObj.alt && <b>Img Alt:</b>}
                                         {imgObj.alt &&
                                             imgObj.alt.length > 0 ?
-                                            imgObj.alt
+                                            imgObj.alt + " ✅"
                                             : "NO ALT ❌"}
                                     </div>
                                     <hr />
