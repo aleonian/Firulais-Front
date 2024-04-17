@@ -20,6 +20,7 @@ function PaperComponent(props) {
 }
 
 export function DetailsDialog({ open, handleClose, title, data }) {
+
     return (
         <React.Fragment>
             <Dialog
@@ -66,14 +67,15 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                                 <hr />
                             </>
                         }
-                        {data.name === "take-pic" &&
+                        {/* {data.name === "take-pic" &&
                             <>
                                 <div>
                                     <b>Snapshot:</b>
-                                    <img src={`data:image/png;base64,${data.value}`} alt="Snapshot" />
+                                    <div className="image-cover" style={{ backgroundImage: `url(data:image/png;base64,${data.value.toString('base64')})` }}>
+                                    </div>
                                 </div>
                             </>
-                        }
+                        } */}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
