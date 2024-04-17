@@ -33,7 +33,7 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {data.value.map(imgObj => {
+                        {data.name === "check-image-tags" && data.value.map(imgObj => {
                             return (
                                 <>
                                     <div>
@@ -51,6 +51,19 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                                 </>
                             )
                         })}
+                        {data.name === "compare-equal" &&
+                            <>
+                                <div>
+                                    <b>firstOperand:</b>
+                                    {data.value.firstOperand}
+                                </div>
+                                <div>
+                                    <b>secondOperand:</b>
+                                    {data.value.secondOperand}
+                                </div>
+                                <hr />
+                            </>
+                        }
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
