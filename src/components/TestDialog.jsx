@@ -12,6 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import Stack from '@mui/material/Stack';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { ActionDialog } from './ActionDialog';
 import { DeleteConfirm } from './DeleteConfirm';
@@ -28,6 +30,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
     const [actionIndex, setActionIndex] = useState(null);
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
+    const [authIsChecked, setAuthIsChecked] = useState(false);
     const [authUser, setAuthUser] = useState("");
     const [authPass, setAuthPass] = useState("");
     const [showErrorAlert, setShowErrorAlert] = useState(false);
@@ -40,8 +43,12 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             setName(tests[testIndex].name);
             setUrl(tests[testIndex].url);
             setActions(tests[testIndex].actions);
-            setAuthUser(tests[testIndex].authUser);
-            setAuthPass(tests[testIndex].authPass);
+            if (tests[testIndex].requiresAuth) {
+                setAuthIsChecked(true);
+                setAuthUser(tests[testIndex].authUser);
+                setAuthPass(tests[testIndex].authPass);
+            }
+            else setAuthIsChecked(false);
         }
         else {
             setName("");
@@ -121,13 +128,34 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             showErrorAlertAndThenVanishIt("You must add at least one action!");
             return;
         }
+        const newlyCreatedTest = { name, url, actions };
+
+        // if auth checkbox is checked, then make sure authUser and authPass are not empty
+        if (authIsChecked) {
+            if (!authUser || authUser.length < 1) {
+                showErrorAlertAndThenVanishIt("The auth username cannot be empty!");
+                return;
+            }
+            if (!authPass || authPass.length < 1) {
+                showErrorAlertAndThenVanishIt("The auth password cannot be empty!");
+                return;
+            }
+            newlyCreatedTest.requiresAuth = true;
+            newlyCreatedTest.authUser = authUser;
+            newlyCreatedTest.authPass = authPass;
+        }
+        else {
+            newlyCreatedTest.requiresAuth = false;
+            newlyCreatedTest.authUser = null;
+            newlyCreatedTest.authPass = null;
+        }
+
         if (testIndex === null) {
             if (tests.find(test => test.name === name)) {
                 showErrorAlertAndThenVanishIt("The test name must be unique!");
                 return;
             }
             //save to site
-            const newlyCreatedTest = { name, url, actions, authUser, authPass };
             testService.create(newlyCreatedTest)
                 .then(response => {
                     newlyCreatedTest.id = response.data.id;
@@ -173,6 +201,10 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
         setTimeout(() => setShowErrorAlert(false), 1500);
     }
 
+    const handleAuthCheckbox = (event) => {
+        setAuthIsChecked(authIsChecked => !authIsChecked);
+    }
+
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
             handleClose();
@@ -211,6 +243,11 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 id="testUrl"
                             />
 
+                            {/* here's the auth checkbox  */}
+                            <FormControlLabel
+                                control={<Checkbox color="primary" onChange={handleAuthCheckbox} checked={authIsChecked} />}
+                                label="This page needs auth"
+                            />
                             <Stack direction="row">
                                 <TextField
                                     type="text"
@@ -220,8 +257,8 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                     onChange={e => setAuthUser(e.target.value)}
                                     value={authUser}
                                     required
-                                    fullWidth
                                     sx={{ mb: 4 }}
+                                    disabled={!authIsChecked}
                                 />
                                 <TextField
                                     type="text"
@@ -231,7 +268,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                     onChange={e => setAuthPass(e.target.value)}
                                     value={authPass}
                                     required
-                                    fullWidth
+                                    disabled={!authIsChecked}
                                     sx={{ mb: 4 }}
                                 />
                             </Stack>
