@@ -22,8 +22,6 @@ import { Details } from './Details';
 
 export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
 
-
-
     const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
@@ -32,54 +30,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
 
-    // useEffect(() => {
-    //     if (resultIndex !== null) {
-    //         setName(results[resultIndex].name);
-    //         setUrl(results[resultIndex].url);
-    //         setActions(results[resultIndex].actions);
-    //     }
-    //     else {
-    //         setName("");
-    //         setUrl("");
-    //         setActions([]);
-    //     }
-    // }, [resultIndex]);
-
-    function generateActionsListListVersion() {
-        if (resultIndex != null && results[resultIndex].actions) {
-            const actions = Object.keys(results[resultIndex].actions);
-
-            if (actions.length > 0) {
-                return (
-                    <List>
-                        {actions.map((action, index) => {
-                            const desiredAction = results[resultIndex].actions[action];
-                            return (
-                                <ListItem key={index}>
-                                    <ListItemText primary={action} />
-                                    <List>
-                                        {
-                                            // desiredAction.commandLogs.split("\n").map((command, index) => {
-                                            desiredAction.commandLogs.map((commandLog, index) => {
-                                                return (
-                                                    <ListItem key={`${commandLog.command}-${index}`}>
-                                                        <ListItemText primary={`${commandLog.success ? '✅' : '❌'} ${commandLog.command}`} />
-                                                    </ListItem>
-                                                )
-                                            })
-                                        }
-                                    </List>
-                                </ListItem>
-                            )
-                        })}
-                    </List>
-                );
-            }
-        }
-
-        // Return a default value if conditions are not met
-        return null;
-    }
     function generateActionsList() {
         if (resultIndex != null && results[resultIndex].actions) {
             const actions = Object.keys(results[resultIndex].actions);

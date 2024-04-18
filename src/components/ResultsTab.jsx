@@ -39,7 +39,7 @@ export const ResultsTab = () => {
         let processedResultsArray = [];
         resultService.getAll()
             .then(resultsArray => {
-                
+
                 processedResultsArray = resultsArray.map((result, index) => {
                     let stats = {
                         totalCommands: 0,
@@ -83,9 +83,8 @@ export const ResultsTab = () => {
             })
     }, []);
 
-    const confirmdeleteResult = (resultId) => {
-
-        setResultId(resultId);
+    const confirmdeleteResult = (id) => {
+        setResultId(id);
         setDeleteResultConfirmOpen(true);
     }
 
@@ -97,7 +96,6 @@ export const ResultsTab = () => {
 
 
     const viewResult = (index) => {
-
         setResultIndex(index);
         setResultDialogOpen(true);
     }
@@ -120,9 +118,9 @@ export const ResultsTab = () => {
         const resultToBeRemoved = results.find(result => result.id === resultId);
         resultService.erase(resultToBeRemoved)
             .then(() => {
-
                 const newResults = [...results];
-                newResults.splice(resultIndex, 1);
+                const index = newResults.findIndex(result => result.id === resultId);
+                newResults.splice(index, 1);
                 setResults(newResults);
                 setDeleteResultConfirmOpen(false);
                 setResultIndex(null);

@@ -12,9 +12,6 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
             width: 400,
             renderCell: (params) => {
                 return (
-                    // <button onClick={() => deleteHandler(params.row.index)}>
-                    //     <DeleteIcon color="primary" />
-                    // </button>
                     <a href="#" onClick={() => viewResultHandler(params.row.index)}>{params.row.name}</a>
                 )
             },
@@ -44,23 +41,14 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
         { field: 'when', headerName: 'When', width: 150 },
 
         { field: 'url', headerName: 'Url', width: 300 },
-        // {
-        //     field: 'edit',
-        //     headerName: 'Edit',
-        //     renderCell: (params) => {
-        //         return (
-        //             <button onClick={() => editHandler(params.row.index)}>
-        //                 <EditIcon color="primary"/>
-        //             </button>
-        //         )
-        //     },
-        // },
         {
             field: 'delete',
             headerName: 'Delete',
             renderCell: (params) => {
                 return (
-                    <button onClick={() => deleteHandler(params.row.id)}>
+                    <button onClick={() => {
+                        deleteHandler(params.row.id)
+                    }}>
                         <DeleteIcon color="primary" />
                     </button>
                 )
@@ -78,7 +66,6 @@ export function ResultsDataTable({ rows, deleteHandler, viewResultHandler }) {
                 },
             }}
             pageSizeOptions={[10, 50]}
-            />
-        // </div>
+        />
     );
 }
