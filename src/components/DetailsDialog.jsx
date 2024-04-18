@@ -24,7 +24,6 @@ export function DetailsDialog({ open, handleClose, title, data }) {
     return (
         <React.Fragment>
             <Dialog
-                fullScreen
                 open={open}
                 onClose={handleClose}
                 PaperComponent={PaperComponent}
@@ -67,15 +66,6 @@ export function DetailsDialog({ open, handleClose, title, data }) {
                                 <hr />
                             </>
                         }
-                        {/* {data.name === "take-pic" &&
-                            <>
-                                <div>
-                                    <b>Snapshot:</b>
-                                    <div className="image-cover" style={{ backgroundImage: `url(data:image/png;base64,${data.value.toString('base64')})` }}>
-                                    </div>
-                                </div>
-                            </>
-                        } */}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

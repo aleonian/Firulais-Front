@@ -8,9 +8,33 @@ text-find 0.079
 
 goto https://www.telesign.com/pricing/numbers-and-sender-ids
 select #myData GB
+
 get-text-content var-price-amount #pricingTableContent > div > div:nth-child(1) > div.priceColumn > p > a 
 save-data-in-variable var-button-text Talk to sales
 compare-equal var-price-amount var-button-text
-save-data-in-variable var-desired-href https://www.telesign.com/contact-sales
+save-data-in-variable var-expected-href https://www.telesign.com/contact-sales
 get-link-href var-button-href #pricingTableContent > div > div:nth-child(1) > div.priceColumn > p > a 
-compare-equal var-desired-href var-button-href
+compare-equal var-expected-href var-button-href
+
+save-data-in-variable var-long-code-desired-setup-fee $1.00 set up fee
+get-text-content var-long-code-setup-fee #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(1)
+compare-equal var-long-code-desired-setup-fee var-long-code-setup-fee
+
+save-data-in-variable var-long-code-desired-monthly-fee $1.00 monthly fee
+get-text-content var-long-code-monthly-fee #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(2)
+compare-equal var-long-code-desired-monthly-fee var-long-code-monthly-fee
+
+get-text-content var-button-text #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(3) > a
+save-data-in-variable var-expected-button-text Start with a trial
+compare-equal var-button-text var-expected-button-text
+save-data-in-variable var-expected-href https://portal.telesign.com/signup
+get-link-href var-button-href #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(3) > a
+compare-equal var-expected-href var-button-href
+
+// A comment
+get-text-content var-button-text #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(4) > a
+save-data-in-variable var-expected-button-text Request DLC in your account
+compare-equal var-button-text var-expected-button-text
+save-data-in-variable var-expected-href https://my.telesign.com/sender-id-purchase/step1
+get-link-href var-button-href #pricingTableContent > div > div:nth-child(2) > div.priceColumn > p:nth-child(4) > a
+compare-equal var-expected-href var-button-href
