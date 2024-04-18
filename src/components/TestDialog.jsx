@@ -171,7 +171,15 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 });
         }
         else {
-            const updatedTest = { name, url, actions, id: tests[testIndex].id, authUser, authPass, requiresAuth: authIsChecked };
+            const updatedTest = {
+                name,
+                url,
+                actions,
+                id: tests[testIndex].id,
+                authUser: authIsChecked ? authUser : null,
+                authPass: authIsChecked ? authUser : null,
+                requiresAuth: authIsChecked
+            };
             //TODO check that the updated test and the stored test are the same
             //if they are, then do not update the test in the server
             testService.update(updatedTest)
