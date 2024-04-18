@@ -22,7 +22,7 @@ h1 {
 .accordion .accordion-summary-background {
   background-color: #1565c0;
   border-radius: 10px;
-  color:white;
+  color: white;
 }
 
 .about-img {
@@ -33,4 +33,17 @@ h1 {
 .about-li {
   list-style: none;
   margin: 20px;
+}
+
+.dialog-title {
+  display: flex;
+  justify-content: space-between; /* Aligns items to the start and end of the container */
+  align-items: center; /* Vertically centers items */
+}
+.dialog-title .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.dialog-title .text {
+  display: flex;
 }

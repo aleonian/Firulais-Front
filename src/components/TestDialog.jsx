@@ -71,7 +71,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                     {
                         actions.map((action, index) => {
                             return (
-                                <ListItem key={action.name} secondaryAction={
+                                <ListItem style={{ backgroundColor: "lightblue" }} key={action.name} secondaryAction={
                                     <>
                                         <IconButton onClick={() => handleActionEdit(index)} edge="end" aria-label="edit">
                                             <EditIcon />
@@ -171,7 +171,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 });
         }
         else {
-            const updatedTest = { name, url, actions, id: tests[testIndex].id, authUser, authPass };
+            const updatedTest = { name, url, actions, id: tests[testIndex].id, authUser, authPass, requiresAuth: authIsChecked };
             //TODO check that the updated test and the stored test are the same
             //if they are, then do not update the test in the server
             testService.update(updatedTest)
@@ -210,7 +210,17 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
             handleClose();
             setTimeout(() => cleanUp(), 500);
         }}>
-            <DialogTitle>{testIndex != null ? "Edit" : "Create New"} Test 🦴 for the doggy</DialogTitle>
+            <DialogTitle>
+                <div className='dialog-title'>
+                    <div className='text'>
+                        {testIndex != null ? "Edit" : "Create New"} Test 🦴 for the doggy
+                    </div>
+                    <div className='buttons'>
+                        <Button onClick={handleClose} variant="outlined" sx={{ bgcolor: 'red', color: 'white' }} type="submit">Cancel</Button>
+                        <Button onClick={handleSaveBtn} variant="outlined" sx={{ bgcolor: 'green', color: 'white' }} type="submit">Save</Button>
+                    </div>
+                </div>
+            </DialogTitle>
             <DialogContent>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
@@ -248,7 +258,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 control={<Checkbox color="primary" onChange={handleAuthCheckbox} checked={authIsChecked} />}
                                 label="This page needs auth"
                             />
-                            <Stack direction="row">
+                            {authIsChecked && <Stack direction="row">
                                 <TextField
                                     type="text"
                                     variant='outlined'
@@ -272,7 +282,9 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                     sx={{ mb: 4 }}
                                 />
                             </Stack>
-                            <InputLabel id="actions">Actions</InputLabel>
+                            }
+
+                            <h3 style={{ marginBottom: 0 }}>Actions</h3>
 
                             <List dense={true}>
                                 {generateList()}
@@ -282,9 +294,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                                 Add new action
                                 <PlusOneIcon />
                             </Button>
-
-
-                            <Button onClick={handleSaveBtn} variant="outlined" color="secondary" type="submit">Save</Button>
                         </form>
                     </Box>
                 </Fragment>
@@ -308,7 +317,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 handleYesCase={deleteAction}
             />
 
-        </Dialog>
+        </Dialog >
     );
 };
 
