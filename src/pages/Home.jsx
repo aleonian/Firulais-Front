@@ -16,10 +16,6 @@ import resultService from '../services/results';
 
 export const Home = () => {
     const [user, setUser] = useState(null);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -36,18 +32,6 @@ export const Home = () => {
             navigate('/login');
         }
     }, []);
-
-    const showErrorAlertAndThenVanishIt = (errorMessage) => {
-        setErrorMessage(errorMessage);
-        setShowErrorAlert(true);
-        setTimeout(() => setShowErrorAlert(false), 1500);
-    }
-
-    const showSuccessAlertAndThenVanishIt = (successMessage) => {
-        setSuccessMessage(successMessage);
-        setShowSuccessAlert(true);
-        setTimeout(() => setShowSuccessAlert(false), 1500);
-    }
 
     const loggedInHome = () => {
         return (
@@ -71,8 +55,8 @@ export const Home = () => {
                     <HomePageTabs />
                 </Box>
 
-                {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
-                {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
+                {/* {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
+                {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />} */}
 
             </Fragment >
 

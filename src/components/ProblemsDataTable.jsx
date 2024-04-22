@@ -42,6 +42,5 @@ export function ProblemsDatatAble({ rows }) {
             }}
             pageSizeOptions={[10, 50]}
         />
-        // </div>
     );
 }

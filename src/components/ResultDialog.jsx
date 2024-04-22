@@ -25,10 +25,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     const [DeleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const [actions, setActions] = useState([]);
     const [actionIndex, setActionIndex] = useState(null);
-    const [showErrorAlert, setShowErrorAlert] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
 
     function generateActionsList() {
         if (resultIndex != null && results[resultIndex].actions) {
@@ -80,76 +76,6 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     }
 
 
-    function generateActionsList2() {
-        if (resultIndex != null) {
-            if (Object.keys(results[resultIndex].actions).length > 0) {
-                return (
-                    <List>
-                        {
-                            Object.keys(results[resultIndex].actions).forEach((action, index) => {
-                                // results[resultIndex].actions.map((action, index) => {
-                                const desiredAction = results[resultIndex].actions[action];
-                                console.log("action->", action)
-                                // return (
-                                //     <ListItem key={`${action}-${index}`}>
-                                //         <ListItemText primary={action} />
-                                //         <List>
-                                //             {
-                                //                 // desiredAction.commandLogs.split("\n").map((command, index) => {
-                                //                 desiredAction.commandLogs.forEach((commandLog, index) => {
-                                //                    
-                                //                     return (
-                                //                         <ListItem key={`${commandLog.command}-${index}`}>
-                                //                             <ListItemText primary={`${commandLog.command} ${commandLog.success ? '✅' : '❌'}`} />
-                                //                         </ListItem>
-                                //                     )
-                                //                 })
-                                //             }
-                                //         </List>
-                                //     </ListItem>
-                                // )
-                                return (
-                                    <ListItem key={`${action}-${index}`}>
-                                        {action}
-                                    </ListItem>
-                                )
-                            })
-                        }
-                    </List>
-                )
-            }
-            else return (
-                "No actions defined so far?"
-            )
-        }
-    }
-    // function generateProblemsList() {
-    //     if (resultIndex != null) {
-    //         
-    //         if (results[resultIndex].problems.length > 0) {
-    //             return (
-    //                 <List>
-    //                     {
-    //                         results[resultIndex].problems.map((problem, index) => {
-    //                             return (
-    //                                 <ListItem key={problem.name}>
-    //                                     <ListItemText primary={problem.problemType} />
-    //                                     <ListItemText primary={problem.errorMessage} />
-    //                                     <ListItemText primary={problem.messageType ? problem.messageType : ""} />
-    //                                     <ListItemText primary={problem.logMessage ? problem.logMessage : ""} />
-    //                                 </ListItem>
-    //                             )
-    //                         })
-    //                     }
-    //                 </List>
-    //             )
-    //         }
-    //         else return (
-    //             "No actions defined so far?"
-    //         )
-    //     }
-    // }
-
     const deleteAction = () => {
 
         const newActions = [...actions];
@@ -170,24 +96,12 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
     const resultComment = () => {
         return `${results[resultIndex].stats.successfullCommands} ✅\
         ${results[resultIndex].stats.failedCommands} ❌`
-        //  Total: ${results[resultIndex].stats.totalCommands}`
-    }
-    const showSuccessAlertAndThenVanishIt = (successMessage) => {
-        setSuccessMessage(successMessage);
-        setShowSuccessAlert(true);
-        setTimeout(() => setShowSuccessAlert(false), 1500);
-    }
-
-    const showErrorAlertAndThenVanishIt = (errorMessage) => {
-        setErrorMessage(errorMessage);
-        setShowErrorAlert(true);
-        setTimeout(() => setShowErrorAlert(false), 1500);
     }
 
     return (
         <Dialog fullWidth={true} maxWidth="md" open={open} onClose={() => {
             handleClose();
-            setTimeout(() => cleanUp(), 1000);
+            // setTimeout(() => cleanUp(), 1000);
         }}>
             <DialogTitle>Result details</DialogTitle>
             <DialogContent>
@@ -259,9 +173,9 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                     </Box>
                 </Fragment>
             </DialogContent>
-
+{/* 
             {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
-            {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />}
+            {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />} */}
             <DeleteConfirm
                 open={DeleteConfirmOpen}
                 handleClose={() => { setDeleteConfirmOpen(false) }}

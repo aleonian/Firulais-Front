@@ -125,7 +125,6 @@ export const ResultsTab = () => {
                 setDeleteResultConfirmOpen(false);
                 setResultIndex(null);
                 showSuccessAlertAndThenVanishIt(`Result deleted from DB! 👍`);
-                // setTimeout(()=>setDeleteResultConfirmOpen(false), 1000);
 
             })
             .catch(error => {

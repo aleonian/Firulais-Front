@@ -39,8 +39,6 @@ export const About = () => {
                         Firulais is a Puppeteer based QA bot. Some kind of &apos;frontend&apos; for the Puppeteer library. You write tests for the doggy and he'll let you know how it all turned out.
                     </Typography>
                     <Fragment>
-                        {/* <Card>
-                            <CardContent> */}
                         <Typography
                             variant="p"
                             color="text.secondary"
@@ -58,10 +56,6 @@ export const About = () => {
                                 <li className='about-li'><img className="about-img" src="/images/mongodb.png" />   MongoDB</li>
                             </ul>
                         </Typography>
-
-                        {/* </CardContent>
-                        </Card> */}
-
                     </Fragment>
                 </Box>
             </Box>

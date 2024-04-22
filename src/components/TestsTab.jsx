@@ -8,9 +8,6 @@ import { SuccessSnackbar } from '../components/SuccessSnackbar';
 import { TestDialog } from '../components/TestDialog';
 import { DeleteConfirm } from '../components/DeleteConfirm';
 import { TestsDataTableFilter } from '../components/TestsDataTableFilter';
-import { TestsDataTable } from '../components/TestsDataTable';
-
-import { wait } from "../util/tools";
 import io from 'socket.io-client';
 
 
@@ -26,9 +23,6 @@ export const TestsTab = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
-    const [testStateUpdateTimer, setTestStateUpdateTimer] = useState(null);
-    const [busy, setBusy] = useState(false);
-    let socket;
 
     useEffect(() => {
         testService.getAll()
@@ -60,25 +54,6 @@ export const TestsTab = () => {
             console.log("Connected to the backend!")
         })
     }
-    // useEffect(() => {
-    //     
-
-    //     if (socket) return;
-
-    //     const socket = io(import.meta.env.VITE_APP_WS_SERVER);
-
-    //     socket.on('connect_error', (error) => {
-    //         console.log("Error ws: ", error)
-    //     })
-
-    //     socket.on('taskStatus', (testObject) => {
-    //         updateTestState(testObject);
-    //     })
-    //     // Clean up
-    //     return () => {
-    //         socket.disconnect();
-    //     };
-    // }, [tests]);
 
     const showErrorAlertAndThenVanishIt = (errorMessage) => {
         setErrorMessage(errorMessage);
@@ -118,8 +93,6 @@ export const TestsTab = () => {
             return newTests;
         });
     }
-
-    
 
     const editTest = (index) => {
 

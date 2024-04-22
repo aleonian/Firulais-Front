@@ -68,9 +68,6 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
                         <form onSubmit={handleSubmit} id="newActionForm">
-                            {/* <form onSubmit={handleSubmit} action={<Link to="/login" />}> */}
-                            {/* <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-                        </Stack> */}
                             <TextField
                                 type="text"
                                 variant='outlined'
@@ -95,23 +92,7 @@ export const ActionDialog = ({ open, handleClose, setActions, actions, setAction
                                     sx={{ mb: 4 }}
                                     value={commands}
                                 />
-                                {/* <Select
-                                    labelId="selectActionLabel"
-                                    // value={personName}
-                                    label="Select a Command"
-                                    onChange={e => setCommands(e.target.value)}
-                                    required
-                                    value={commands}
-                                    sx={{ mb: 4 }}
-                                >
-                                    <MenuItem key={1} value={"waitForSelector"}>waitForSelector</MenuItem>
-                                    <MenuItem key={2} value={"otraVaina"}>otraVaina</MenuItem>
-                                </Select> */}
                             </FormControl>
-                            {/* <Button variant="contained" sx={{ mb: 4 }} onClick={newActionBtnHandler}>
-                                Add new action
-                                <PlusOneIcon />
-                            </Button> */}
                             <Button variant="outlined" color="secondary" type="submit">Save</Button>
                         </form>
                     </Box>

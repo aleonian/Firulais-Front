@@ -233,9 +233,6 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 <Fragment>
                     <Box sx={{ minWidth: 120 }}>
                         <form>
-                            {/* <form onSubmit={handleSubmit} action={<Link to="/login" />}> */}
-                            {/* <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-                        </Stack> */}
                             <TextField
                                 type="text"
                                 variant='outlined'

@@ -9,13 +9,6 @@ const VISIBLE_FIELDS = ['name', 'edit', 'delete', 'run', 'state'];
 
 export function TestsDataTableFilter({ rows, deleteHandler, editHandler, runHandler }) {
 
-    // const { data } = useDemoData({
-    //     dataSet: 'Employee',
-    //     visibleFields: VISIBLE_FIELDS,
-    //     rowLength: 100,
-    // });
-    // Otherwise filter will be applied on fields such as the hidden column id
-
     const myColumns = [
         { field: 'name', headerName: 'Name', width: 400 },
         {
