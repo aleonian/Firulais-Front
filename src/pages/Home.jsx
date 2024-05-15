@@ -55,9 +55,6 @@ export const Home = () => {
                     <HomePageTabs />
                 </Box>
 
-                {/* {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
-                {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />} */}
-
             </Fragment >
 
         )

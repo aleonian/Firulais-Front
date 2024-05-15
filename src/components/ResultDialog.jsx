@@ -173,9 +173,7 @@ export const ResultDialog = ({ open, handleClose, results, resultIndex }) => {
                     </Box>
                 </Fragment>
             </DialogContent>
-{/* 
-            {showErrorAlert && <ErrorSnackBar open={true} message={errorMessage} />}
-            {showSuccessAlert && <SuccessSnackbar open={true} message={successMessage} />} */}
+
             <DeleteConfirm
                 open={DeleteConfirmOpen}
                 handleClose={() => { setDeleteConfirmOpen(false) }}

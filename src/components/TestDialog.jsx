@@ -177,7 +177,7 @@ export const TestDialog = ({ open, handleClose, tests, setTests, testIndex }) =>
                 actions,
                 id: tests[testIndex].id,
                 authUser: authIsChecked ? authUser : null,
-                authPass: authIsChecked ? authUser : null,
+                authPass: authIsChecked ? authPass : null,
                 requiresAuth: authIsChecked
             };
             //TODO check that the updated test and the stored test are the same
